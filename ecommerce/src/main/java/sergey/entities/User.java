@@ -1,4 +1,4 @@
-package sergey.data;
+package sergey.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,12 +14,14 @@ import sergey.util.PasswordHashing.InvalidHashException;
 
 @Entity
 public class User {
+    
+    public static final Long defaultRoleId = (long) 2; // default role id
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column
@@ -31,9 +33,28 @@ public class User {
     @Column
     private String lastName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "permissionId", referencedColumnName = "id")
-    private String role;
+    @Column
+    private Double balance;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="role")
+    private Role role;
+
+    public Role getRole() {
+	return role;
+    }
+
+    public void setRole(Role role) {
+	this.role = role;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
 
     public String getEmail() {
 	return email;
@@ -48,11 +69,14 @@ public class User {
     }
 
     public void setHashedPassword(String password) throws CannotPerformOperationException {
-	hashedPassword = PasswordHashing.createHash("password");
+	hashedPassword = password; // Plain text for testing
+	//hashedPassword = PasswordHashing.createHash("password"); // Need fix
+	
     }
     
-    public boolean authenticate (String password) throws CannotPerformOperationException, InvalidHashException {
-	return PasswordHashing.verifyPassword(password, getHashedPassword());
+    public boolean validate (String password) throws CannotPerformOperationException, InvalidHashException {
+	return (hashedPassword.equals(password)); // Compare plain text password for testing
+	//return PasswordHashing.verifyPassword(password, getHashedPassword()); // Need fix
     }
 
     public String getFirstName() {
@@ -69,14 +93,6 @@ public class User {
 
     public void setLastName(String lastName) {
 	this.lastName = lastName;
-    }
-
-    public String getRole() {
-	return role;
-    }
-
-    public void setRole(String role) {
-	this.role = role;
     }
 
     public Long getId() {
