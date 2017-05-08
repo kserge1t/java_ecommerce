@@ -19,7 +19,7 @@ public class UserAuthentication extends HttpServlet {
     private static final long serialVersionUID = 1L;
     RequestDispatcher requestDispatcher;
     
- // Display login page for Get requests
+    // Display login page for Get requests
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	request.setAttribute("notice", "Please login using eMail and Password.");

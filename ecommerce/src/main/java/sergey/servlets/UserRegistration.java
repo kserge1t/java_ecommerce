@@ -48,14 +48,14 @@ public class UserRegistration extends HttpServlet {
 	user.setRole(roleDao.getRoleById(User.defaultRoleId));
 	
 
-	response.getWriter().append("<li>password: "+request.getParameter("password"));
-	response.getWriter().append("<li>confirmPassword: "+request.getParameter("confirmPassword"));
+	//response.getWriter().append("<li>password: "+request.getParameter("password"));
+	//response.getWriter().append("<li>confirmPassword: "+request.getParameter("confirmPassword"));
 	response.getWriter().append("<li>User First Name: "+user.getFirstName());
 	response.getWriter().append("<li>User Last Name: "+user.getLastName());
 	response.getWriter().append("<li>User Email: "+user.getEmail());
 	response.getWriter().append("<li>User Balance: "+user.getBalance());
-	response.getWriter().append("<li>User Role: "+user.getRole());
-	response.getWriter().append("<li>User Password: "+user.getHashedPassword());
+	//response.getWriter().append("<li>User Role: "+user.getRole());
+	//response.getWriter().append("<li>User Password: "+user.getHashedPassword());
 	
 	
 	UserDAO userDao = new UserDAO();
