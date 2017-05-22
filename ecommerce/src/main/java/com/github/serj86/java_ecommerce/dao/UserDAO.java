@@ -1,13 +1,11 @@
-package sergey.dao;
+package com.github.serj86.java_ecommerce.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import sergey.entities.Role;
-import sergey.entities.User;
+import com.github.serj86.java_ecommerce.entities.User;
 
 public class UserDAO {
     
@@ -170,4 +168,5 @@ public class UserDAO {
 	}
 	return false;
     }
+    
 }

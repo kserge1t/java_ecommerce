@@ -1,4 +1,4 @@
-package sergey.entities;
+package com.github.serj86.java_ecommerce.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,43 +8,32 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import sergey.util.PasswordHashing;
-import sergey.util.PasswordHashing.CannotPerformOperationException;
-import sergey.util.PasswordHashing.InvalidHashException;
+import com.github.serj86.java_ecommerce.util.BCrypt;
 
-@Entity
+@Entity(name="users")
 public class User {
-    
-    public static final Long defaultRoleId = (long) 2; // default role id
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long user_id;
 
     @Column(unique = true)
     private String email;
-
-    @Column
+    
     private String hashedPassword;
-
-    @Column
     private String firstName;
-
-    @Column
     private String lastName;
-
-    @Column
     private Double balance;
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="role")
+    @JoinColumn(name="role_id")
     private Role role;
 
-    public Role getRole() {
+    public Role getRoleObject() {
 	return role;
     }
 
-    public void setRole(Role role) {
+    public void setRoleObject(Role role) {
 	this.role = role;
     }
 
@@ -68,15 +57,9 @@ public class User {
 	return hashedPassword;
     }
 
-    public void setHashedPassword(String password) throws CannotPerformOperationException {
-	hashedPassword = password; // Plain text for testing
-	//hashedPassword = PasswordHashing.createHash("password"); // Need fix
-	
-    }
-    
-    public boolean validate (String password) throws CannotPerformOperationException, InvalidHashException {
-	return (hashedPassword.equals(password)); // Compare plain text password for testing
-	//return PasswordHashing.verifyPassword(password, getHashedPassword()); // Need fix
+    public void setHashedPassword(String password) {
+	hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());;
+
     }
 
     public String getFirstName() {
@@ -96,11 +79,11 @@ public class User {
     }
 
     public Long getId() {
-	return id;
+	return user_id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+	this.user_id = id;
     }
 
 }

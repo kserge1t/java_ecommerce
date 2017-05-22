@@ -1,4 +1,4 @@
-package sergey.servlets;
+package com.github.serj86.java_ecommerce.servlets;
 
 import java.io.IOException;
 
@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import sergey.dao.RoleDAO;
-import sergey.dao.UserDAO;
-import sergey.entities.User;
-import sergey.util.PasswordHashing.CannotPerformOperationException;
+import com.github.serj86.java_ecommerce.dao.RoleDAO;
+import com.github.serj86.java_ecommerce.dao.SettingDAO;
+import com.github.serj86.java_ecommerce.dao.UserDAO;
+import com.github.serj86.java_ecommerce.entities.User;
 
 @WebServlet(urlPatterns = {"/register"})
 public class UserRegistration extends HttpServlet {
@@ -35,17 +35,18 @@ public class UserRegistration extends HttpServlet {
 	String email = request.getParameter("email");
 	String password = request.getParameter("confirmPassword");
 	
+	
+	// Move logic to separate class
 	User user = new User();
 	user.setFirstName(firstName);
 	user.setLastName(lastName);
 	user.setEmail(email);
-	try {
-	    user.setHashedPassword(password);
-	} catch (CannotPerformOperationException e) {
-	    e.printStackTrace();
-	}
+	user.setHashedPassword(password);
 	RoleDAO roleDao = new RoleDAO();
-	user.setRole(roleDao.getRoleById(User.defaultRoleId));
+	SettingDAO setting = new SettingDAO();
+	//user.setRoleObject(roleDao.getRoleByValue(setting.getSettingValueByName("user_default_role")));
+	user.setRoleObject(roleDao.getRoleById(Long.parseLong(setting.getSettingValueByName("user_default_role_id"))));
+	user.setBalance(Double.parseDouble(setting.getSettingValueByName("user_starting_balance")));
 	
 
 	//response.getWriter().append("<li>password: "+request.getParameter("password"));

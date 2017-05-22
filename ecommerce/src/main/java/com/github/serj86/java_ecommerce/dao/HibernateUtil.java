@@ -1,4 +1,4 @@
-package sergey.dao;
+package com.github.serj86.java_ecommerce.dao;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;

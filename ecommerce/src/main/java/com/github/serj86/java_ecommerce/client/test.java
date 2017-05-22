@@ -1,11 +1,10 @@
-package sergey.client;
+package com.github.serj86.java_ecommerce.client;
 
-import sergey.dao.RoleDAO;
-import sergey.dao.UserDAO;
-import sergey.entities.User;
-import sergey.util.PasswordHashing;
-import sergey.util.PasswordHashing.CannotPerformOperationException;
-import sergey.util.PasswordHashing.InvalidHashException;
+import com.github.serj86.java_ecommerce.dao.UserDAO;
+import com.github.serj86.java_ecommerce.entities.User;
+import com.github.serj86.java_ecommerce.util.PasswordHashing;
+import com.github.serj86.java_ecommerce.util.PasswordHashing.CannotPerformOperationException;
+import com.github.serj86.java_ecommerce.util.PasswordHashing.InvalidHashException;
 
 public class test {
 

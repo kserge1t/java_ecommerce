@@ -1,25 +1,25 @@
-package sergey.entities;
+package com.github.serj86.java_ecommerce.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
+@Entity(name="roles")
 public class Role {
     
     @Id
     @GeneratedValue
-    private Long id;
+    private Long role_id;
     
     @Column(unique = true)
     private String role;
 
     public Long getId() {
-        return id;
+        return role_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long role_id) {
+        this.role_id = role_id;
     }
 
     public String getRole() {
@@ -29,7 +29,5 @@ public class Role {
     public void setRole(String role) {
         this.role = role;
     }
-    
-    
 
 }

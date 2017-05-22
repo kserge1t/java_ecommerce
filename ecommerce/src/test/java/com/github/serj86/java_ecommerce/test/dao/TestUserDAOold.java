@@ -1,3 +1,4 @@
+package com.github.serj86.java_ecommerce.test.dao;
 
 
 import static org.junit.Assert.assertEquals;
@@ -10,13 +11,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import sergey.dao.RoleDAO;
-import sergey.dao.UserDAO;
-import sergey.entities.Role;
-import sergey.entities.User;
-import sergey.util.PasswordHashing.CannotPerformOperationException;
+import com.github.serj86.java_ecommerce.dao.RoleDAO;
+import com.github.serj86.java_ecommerce.dao.SettingDAO;
+import com.github.serj86.java_ecommerce.dao.UserDAO;
+import com.github.serj86.java_ecommerce.entities.Role;
+import com.github.serj86.java_ecommerce.entities.User;
+import com.github.serj86.java_ecommerce.util.PasswordHashing.CannotPerformOperationException;
 
-public class TestUserDAO {
+public class TestUserDAOold {
     
     @BeforeClass
     public static void setUp() throws CannotPerformOperationException {
@@ -29,7 +31,7 @@ public class TestUserDAO {
 	user.setLastName("Tset");
 	user.setEmail("test@test.com");
 	user.setBalance(100.00);
-	user.setRole(roleDao.getRoleById(User.defaultRoleId));
+	user.setRole(roleDao.getRoleByValue(new SettingDAO().getSettingValueByName("default_role_id")));
 	user.setHashedPassword("Secret");
 	
 	if (userDao.addUser(user)) {
@@ -59,7 +61,7 @@ public class TestUserDAO {
 	user.setLastName("Tset");
 	user.setEmail("test@test.com");
 	user.setBalance(100.00);
-	user.setRole(roleDao.getRoleById(User.defaultRoleId));
+	user.setRole(roleDao.getRoleByValue(new SettingDAO().getSettingValueByName("default_role_id")));
 	user.setHashedPassword("Secret");
 	
 	userDao.deleteUserByEmail(user.getEmail());
@@ -70,7 +72,7 @@ public class TestUserDAO {
     public void preTest() throws CannotPerformOperationException {
 	UserDAO userDao = new UserDAO();
 	if (userDao.getUserByEmail("test@test.com") == null) {
-	    TestUserDAO.setUp();
+	    TestUserDAOold.setUp();
 	}
     }
     
@@ -86,7 +88,7 @@ public class TestUserDAO {
     @Test
     public void testGetRole() {
 	RoleDAO roleDao = new RoleDAO();
-	assertEquals(Role.class,roleDao.getRoleById(User.defaultRoleId).getClass());
+	user.setRole(roleDao.getRoleByValue(new SettingDAO().getSettingValueByName("default_role_id")));
     }
     
     @Test

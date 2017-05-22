@@ -34,8 +34,9 @@
 		<property name="hbm2ddl.auto">update</property>
 
 		<!-- Mapping files -->
-		<mapping class="sergey.entities.User" />
-		<mapping class="sergey.entities.Role" />
+		<mapping class="com.github.serj86.java_ecommerce.entities.User" />
+		<mapping class="com.github.serj86.java_ecommerce.entities.Role" />
+		<mapping class="com.github.serj86.java_ecommerce.entities.Setting" />
 
 	</session-factory>
 

@@ -1,49 +1,13 @@
-package sergey.dao;
+package com.github.serj86.java_ecommerce.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import sergey.entities.Role;
+import com.github.serj86.java_ecommerce.entities.Role;
 
 public class RoleDAO {
-    
-    // Save role
-    public boolean addRole(Role role) {
-	Session session = HibernateUtil.getSessionFactory().openSession();
-	try {
-	    session.beginTransaction();
-	    session.save(role);
-	    session.flush();
-	    session.getTransaction().commit();
-	    return true;
-	} catch (RuntimeException e) {
-	    session.getTransaction().rollback();
-	    e.printStackTrace();
-	} finally {
-	    session.close();
-	}
-	return false;
-    }
-    
-    // Update role
-    public boolean updateRole(Role role) {
-	Session session = HibernateUtil.getSessionFactory().openSession();
-	try {
-	    session.beginTransaction();
-	    session.saveOrUpdate(role);
-	    session.flush();
-	    session.getTransaction().commit();
-	    return true;
-	} catch (RuntimeException e) {
-	    session.getTransaction().rollback();
-	    e.printStackTrace();
-	} finally {
-	    session.close();
-	}
-	return false;
-    }
 
     // Get all the roles
     public List<Role> getAllRoles() {
@@ -154,24 +118,6 @@ public class RoleDAO {
 	try {
 	    session.beginTransaction();
 	    Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("role", value)).uniqueResult();
-	    session.delete(role);
-	    session.flush();
-	    session.getTransaction().commit();
-	    return true;
-	} catch (RuntimeException e) {
-	    session.getTransaction().rollback();
-	    e.printStackTrace();
-	} finally {
-	    session.close();
-	}
-	return false;
-    }
-
-    // Delete role by Role
-    public boolean deleteRole(Role role) {
-	Session session = HibernateUtil.getSessionFactory().openSession();
-	try {
-	    session.beginTransaction();
 	    session.delete(role);
 	    session.flush();
 	    session.getTransaction().commit();
