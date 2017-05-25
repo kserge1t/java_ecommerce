@@ -12,8 +12,6 @@ import com.github.serj86.java_ecommerce.dao.SettingDAO;
 import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.entities.Role;
 import com.github.serj86.java_ecommerce.entities.User;
-import com.github.serj86.java_ecommerce.util.PasswordHashing.CannotPerformOperationException;
-import com.github.serj86.java_ecommerce.util.PasswordHashing.InvalidHashException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

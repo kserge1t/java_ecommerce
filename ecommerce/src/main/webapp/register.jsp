@@ -7,69 +7,42 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <title>New User Registration</title>
 
-<script>
-function validate_form() {
-	
-	var firstName = document.forms["registrationForm"]["firstName"].value;
-	var lastName = document.forms["registrationForm"]["lastName"].value;
-    var email = document.forms["registrationForm"]["email"].value;
-    var password = document.forms["registrationForm"]["password"].value;
-    var confirmPassword = document.forms["registrationForm"]["confirmPassword"].value;
-    var emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    
-    if (firstName == "" || lastName == "" || email == "" || password == "" || confirmPassword == "") {
-    	alert("Please fill all the required fields.");
-        return false;
-    }
-    
-    if (!emailFormat.test(email)) {
-    	alert("You have entered an invalid email address!");
-    	registrationForm.email.focus();
-        return false;
-    }
-    
-    if (password != confirmPassword) {
-    	alert("Both password fields must match!");
-    	registrationForm.password.focus();
-        return false;
-    }
-    
-    if (password.length < 6) {
-    	alert("Password must be at least 6 characters long!");
-    	registrationForm.password.focus();
-        return false;
-    }
-}
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/UserFormValidator.js"></script>
 
 </head>
 <body>
 	<h1>New User Registration Form:</h1>
-	<strong><c:out value="${requestScope.notice}"></c:out></strong>
-	<form name="registrationForm" action="register" onsubmit="return validate_form()" method="post">
+	<h3><c:out value="${requestScope.notice}"></c:out></h3>
+	<form name="userForm" action="register" onsubmit="return validateUserForm()" method="post">
 		<table>
-			<tr>
+			<tr id="firstName">
 				<td>First Name:</td>
 				<td><input type="text" name="firstName" placeholder="First Name" required></td>
+				<td><span class="msg"></span></td>
 			</tr>
-			<tr>
+			<tr id="lastName">
 				<td>Last Name:</td>
 				<td><input type="text" name="lastName" placeholder="Last Name" required></td>
+				<td><span class="msg"></span></td>
 			</tr>
-			<tr>
+			<tr id="email">
 				<td>eMail:</td>
 				<td><input type="text" name="email" placeholder="eMail" required></td>
+				<td><span class="msg"></span></td>
 			</tr>
-			<tr>
+			<tr id="password">
 				<td>Password:</td>
 				<td><input type="password" name="password" placeholder="Password" required></td>
+				<td><span class="msg"></span></td>
 			</tr>
-			<tr>
+			<tr id="confirmPassword">
 				<td>Confirm Password:</td>
 				<td><input type="password" name="confirmPassword" placeholder="Confirm Password" required></td>
+				<td><span class="msg"></span></td>
 			</tr>
 			<tr>
-				<td colspan="2" align="center"><input type="submit" value="Submit"></td>
+				<td colspan="2" align="center"><input id="submit" type="submit" value="Submit"></td>
 			</tr>
 		</table>
 	</form>

@@ -6,32 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <title>Please Login</title>
-
-<script>
-function validate_form() {
-    var email = document.forms["loginForm"]["email"].value;
-    var password = document.forms["loginForm"]["password"].value;
-    var emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    
-    if (email == "" || password == "") {
-    	alert("Please fill both, email and password.");
-        return false;
-    }
-    
-    if (!emailFormat.test(email)) {
-    	alert("You have entered an invalid email address!");
-        return false;
-    }
-}
-</script>
-
 </head>
 <body>
 	<h1>Login Page</h1>
 	<c:if test="${not empty requestScope.notice}">
 	   <p><strong><c:out value="${requestScope.notice} "/></strong></p>
 	</c:if>
-	<form name="loginForm" action="authenticate" onsubmit="return validate_form()" method="post">
+	<form name="loginForm" action="login" onsubmit="return validate_form()" method="post">
 		<table>
 			<tr>
 				<td>eMail:</td>
@@ -39,7 +20,7 @@ function validate_form() {
 			</tr>
 			<tr>
 				<td>Password:</td>
-				<td><input type="password" name="password" placeholder="Password" required></td>
+				<td><input type="password" name="password" placeholder="Password"></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center"><input type="submit"

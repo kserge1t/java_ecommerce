@@ -8,42 +8,6 @@ import org.hibernate.criterion.Restrictions;
 import com.github.serj86.java_ecommerce.entities.User;
 
 public class UserDAO {
-    
-    // Save user
-    public boolean addUser(User user) {
-	Session session = HibernateUtil.getSessionFactory().openSession();
-	try {
-	    session.beginTransaction();
-	    session.save(user);
-	    session.flush();
-	    session.getTransaction().commit();
-	    return true;
-	} catch (RuntimeException e) {
-	    session.getTransaction().rollback();
-	    e.printStackTrace();
-	} finally {
-	    session.close();
-	}
-	return false;
-    }
-    
-    // Update user
-    public boolean updateUser(User user) {
-	Session session = HibernateUtil.getSessionFactory().openSession();
-	try {
-	    session.beginTransaction();
-	    session.saveOrUpdate(user);
-	    session.flush();
-	    session.getTransaction().commit();
-	    return true;
-	} catch (RuntimeException e) {
-	    session.getTransaction().rollback();
-	    e.printStackTrace();
-	} finally {
-	    session.close();
-	}
-	return false;
-    }
 
     // Get all the users
     public List<User> getAllUsers() {
@@ -113,24 +77,6 @@ public class UserDAO {
 	try {
 	    session.beginTransaction();
 	    User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", email)).uniqueResult();
-	    session.delete(user);
-	    session.flush();
-	    session.getTransaction().commit();
-	    return true;
-	} catch (RuntimeException e) {
-	    session.getTransaction().rollback();
-	    e.printStackTrace();
-	} finally {
-	    session.close();
-	}
-	return false;
-    }
-
-    // Delete user by User
-    public boolean deleteUser(User user) {
-	Session session = HibernateUtil.getSessionFactory().openSession();
-	try {
-	    session.beginTransaction();
 	    session.delete(user);
 	    session.flush();
 	    session.getTransaction().commit();

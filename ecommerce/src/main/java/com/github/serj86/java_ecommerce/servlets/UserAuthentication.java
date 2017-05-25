@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.github.serj86.java_ecommerce.entities.User;
 import com.github.serj86.java_ecommerce.util.UserValidation;
 
-@WebServlet(urlPatterns = { "/authenticate" })
+@WebServlet(urlPatterns = { "/login" })
 public class UserAuthentication extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class UserAuthentication extends HttpServlet {
 
 	if (session.getAttribute("user") != null) {
 	    request.setAttribute("notice", "Welcome!");
-	    requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+	    requestDispatcher = getServletContext().getRequestDispatcher("/user-edit.jsp");
 	    requestDispatcher.forward(request, response);
 	} else {
 	    request.setAttribute("notice", "Login failed, please double-check your credentials and try again.");
