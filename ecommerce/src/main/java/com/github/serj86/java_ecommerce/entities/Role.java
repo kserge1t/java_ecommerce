@@ -9,17 +9,18 @@ public class Role {
     
     @Id
     @GeneratedValue
-    private Long role_id;
+    @Column(name="role_id", unique = true, nullable = false, length = 20)
+    private Long id;
     
-    @Column(unique = true)
+    @Column(unique = true, nullable = false, length = 30)
     private String role;
 
     public Long getId() {
-        return role_id;
+        return id;
     }
 
     public void setId(Long role_id) {
-        this.role_id = role_id;
+        this.id = role_id;
     }
 
     public String getRole() {

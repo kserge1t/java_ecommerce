@@ -10,19 +10,21 @@ public class Setting {
 
     @Id
     @GeneratedValue
-    private Long setting_id;
+    @Column(name="setting_id", unique = true, nullable = false, length = 20)
+    private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false, length = 50)
     private String setting;
 
+    @Column(unique = false, nullable = false, length = 255)
     private String value;
     
-    public Long getSetting_id() {
-        return setting_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setSetting_id(Long setting_id) {
-        this.setting_id = setting_id;
+    public void setId(Long setting_id) {
+        this.id = setting_id;
     }
 
     public String getSetting() {

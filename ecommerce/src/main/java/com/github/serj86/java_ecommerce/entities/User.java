@@ -15,18 +15,26 @@ public class User {
 
     @Id
     @GeneratedValue
-    private Long user_id;
+    @Column(name="user_id", unique = true, nullable = false, length = 20)
+    private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false, length = 255)
     private String email;
     
-    private String hashedPassword;
+    @Column(unique = false, nullable = false, length = 255)
+    private String passwordHash;
+    
+    @Column(unique = false, nullable = false, length = 30)
     private String firstName;
+    
+    @Column(unique = false, nullable = false, length = 30)
     private String lastName;
+    
+    @Column(unique = false, nullable = false, length = 20)
     private Double balance;
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="role_id")
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    @JoinColumn(name="role_id", unique = false, nullable = false)
     private Role role;
 
     public Role getRoleObject() {
@@ -53,13 +61,17 @@ public class User {
 	this.email = email;
     }
 
-    public String getHashedPassword() {
-	return hashedPassword;
+    public String getPasswordHash() {
+	return passwordHash;
     }
 
-    public void setHashedPassword(String password) {
-	hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());;
+    public void setPasswordHash(String plainPassword) {
+	this.passwordHash = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+    }
 
+    // For setting hashed password directly
+    public void setPreHashedPassword(String hashedPassword) {
+	this.passwordHash = hashedPassword;
     }
 
     public String getFirstName() {
@@ -79,11 +91,11 @@ public class User {
     }
 
     public Long getId() {
-	return user_id;
+	return id;
     }
 
     public void setId(Long id) {
-	this.user_id = id;
+	this.id = id;
     }
 
 }

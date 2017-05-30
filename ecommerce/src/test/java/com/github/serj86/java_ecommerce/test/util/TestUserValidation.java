@@ -7,12 +7,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.github.serj86.java_ecommerce.dao.GenericDAO;
 import com.github.serj86.java_ecommerce.dao.RoleDAO;
 import com.github.serj86.java_ecommerce.dao.SettingDAO;
 import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.entities.User;
+import com.github.serj86.java_ecommerce.services.UserValidationService;
 import com.github.serj86.java_ecommerce.util.BCrypt;
-import com.github.serj86.java_ecommerce.util.UserValidation;
 
 public class TestUserValidation {
     public static String testEmail = "test@testing.com";
@@ -20,13 +21,15 @@ public class TestUserValidation {
 
     @BeforeClass
     public static void setUp() {
-	UserDAO userDao = new UserDAO();
-	User user = new User();
 	RoleDAO roleDao = new RoleDAO();
+	GenericDAO gDao = new GenericDAO();
+	UserDAO uDao = new UserDAO();
+	User user = new User();
+	
 	
 	// Delete existing test users, if any
-	if (userDao.getUserByEmail(testEmail) != null) {
-	    userDao.deleteUserByEmail(testEmail);
+	if (uDao.getUserByEmail(testEmail) != null) {
+	    uDao.deleteUserByEmail(testEmail);
 	    System.out.println("Found and deleted exisitng test user.");
 	}
 	
@@ -36,8 +39,8 @@ public class TestUserValidation {
 	user.setEmail(testEmail);
 	user.setBalance(Double.parseDouble(new SettingDAO().getSettingValueByName("user_starting_balance")));
 	user.setRoleObject(roleDao.getRoleById(Long.getLong(new SettingDAO().getSettingValueByName("user_default_role_id"))));
-	user.setHashedPassword(testPassword);
-	userDao.addUser(user);
+	user.setPasswordHash(testPassword);
+	gDao.add(user);
 	System.out.println("New test user has been created.");
     }
 
@@ -49,21 +52,21 @@ public class TestUserValidation {
 
     @Test
     public void testValidateUserByEmail() {
-	UserValidation uVal = new UserValidation();
+	UserValidationService uVal = new UserValidationService();
 	assertTrue(uVal.validateUserByEmail(testEmail, testPassword));
     }
 
     @Test
     public void testGetValidatedUserByEmail() {
 	UserDAO userDao = new UserDAO();
-	UserValidation uVal = new UserValidation();
+	UserValidationService uVal = new UserValidationService();
 	assertEquals(userDao.getUserByEmail(testEmail).getId(), uVal.getValidatedUserByEmail(testEmail, testPassword).getId());
     }
 
     @Test
     public void testValidateUserById() {
 	UserDAO userDao = new UserDAO();
-	UserValidation uVal = new UserValidation();
+	UserValidationService uVal = new UserValidationService();
 	assertTrue(uVal.validateUserById(userDao.getUserByEmail(testEmail).getId(), testPassword));
     }
 

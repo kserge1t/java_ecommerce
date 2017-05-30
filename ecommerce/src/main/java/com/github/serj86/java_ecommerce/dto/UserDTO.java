@@ -1,79 +1,163 @@
 package com.github.serj86.java_ecommerce.dto;
 
+import com.github.serj86.java_ecommerce.dao.RoleDAO;
+import com.github.serj86.java_ecommerce.entities.User;
+
 public class UserDTO {
 
-    private Long user_id;
+    private String user_id;
     private String email;
-    private String password;
+    private String plainPassword;
+    private String hashedPassword;
     private String firstName;
     private String lastName;
-    private Double balance;
-    private Long roleId;
+    private String balance;
+    private String roleId;
     private String roleName;
+    
+    public UserDTO() {}
+    
+    public UserDTO(User user) {
+	this.convertUserToDto(user);
+    }
 
-    public Long getRoleId() {
+    public String getRoleId() {
 	return roleId;
     }
 
-    public void setRoleId(Long roleId) {
-	this.roleId = roleId;
+    public <T> void setRoleId(T roleId) {
+	this.roleId = String.valueOf(roleId);
     }
 
-    public Double getBalance() {
+    public String getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public <T> void setBalance(T balance) {
+        this.balance = String.valueOf(balance);
     }
 
     public String getEmail() {
 	return email;
     }
 
-    public void setEmail(String email) {
-	this.email = email;
-    }
-
-    public String getPassword() {
-	return password;
-    }
-
-    public void setPassword(String password) {
-	this.password = password;
-
+    public <T> void setEmail(T email) {
+	this.email = String.valueOf(email);
     }
 
     public String getFirstName() {
 	return firstName;
     }
 
-    public void setFirstName(String firstName) {
-	this.firstName = firstName;
+    public <T> void setFirstName(T firstName) {
+	this.firstName = String.valueOf(firstName);
     }
 
     public String getLastName() {
 	return lastName;
     }
 
-    public void setLastName(String lastName) {
-	this.lastName = lastName;
+    public <T> void setLastName(T lastName) {
+	this.lastName = String.valueOf(lastName);
     }
 
-    public Long getId() {
+    public String getId() {
 	return user_id;
     }
 
-    public void setId(Long id) {
-	this.user_id = id;
+    public <T> void setId(T id) {
+	this.user_id = String.valueOf(id);
     }
 
     public String getRoleName() {
 	return roleName;
     }
 
-    public void setRoleName(String roleName) {
-	this.roleName = roleName;
+    public <T> void setRoleName(T roleName) {
+	this.roleName = String.valueOf(roleName);
+    }
+
+    public String getPlainPassword() {
+	return plainPassword;
+    }
+
+    public <T> void setPlainPassword(T plainPassword) {
+	this.plainPassword = String.valueOf(plainPassword);
+    }
+
+    public String getHashedPassword() {
+	return hashedPassword;
+    }
+
+    public <T> void setHashedPassword(T hashedPassword) {
+	this.hashedPassword = String.valueOf(hashedPassword);
+    }
+    
+    public void convertUserToDto(User user) {
+	this.setId(String.valueOf(user.getId()));
+	this.setEmail(user.getEmail());
+	this.setFirstName(user.getFirstName());
+	this.setLastName(user.getLastName());
+	this.setRoleId(String.valueOf(user.getRoleObject().getId()));
+	this.setRoleName(user.getRoleObject().getRole());
+	this.setBalance(String.valueOf(user.getBalance()));
+	this.setHashedPassword(user.getPasswordHash());
+    }
+
+    public User convertDtoToUser() {
+	User user = new User();
+	
+	try {
+	    user.setId(Long.parseLong(this.getId()));
+	} catch (Exception e) {
+	    System.out.println(e.getMessage()+" when setId("+this.getId()+") for User");
+	}
+
+	try {
+	user.setEmail(this.getEmail());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage()+" when setEmail("+this.getEmail()+") for User");
+	}
+
+	try {
+	user.setFirstName(this.getFirstName());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage()+" when setFirstName("+this.getFirstName()+") for User");
+	}
+
+	try {
+	user.setLastName(this.getLastName());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage()+" when setLastName("+this.getLastName()+") for User");
+	}
+
+	try {
+	    user.setRoleObject(new RoleDAO().getRoleById(Integer.parseInt(this.getRoleId())));
+	} catch (Exception e) {
+	    System.out.println(e.getMessage()+" when setRoleObject("+this.getRoleId()+") for User");
+	}
+
+	try {
+	    user.setBalance(Double.parseDouble(this.getBalance()));
+	} catch (Exception e) {
+	    System.out.println(e.getMessage()+" when setBalance("+this.getBalance()+") for User");
+	}
+
+	try {
+	    if (this.getPlainPassword() != null)
+	    user.setPasswordHash(this.getPlainPassword());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage()+" when setPasswordHash("+this.getPlainPassword()+") for User");
+	}
+
+	try {
+	    if (this.getHashedPassword() != null)
+	    user.setPreHashedPassword(this.getHashedPassword());
+	} catch (Exception e) {
+	    System.out.println(e.getMessage()+" when setPreHashedPassword("+this.getHashedPassword()+") for User");
+	}
+
+	return user;
     }
 
 }

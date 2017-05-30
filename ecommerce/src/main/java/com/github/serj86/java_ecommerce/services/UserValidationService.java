@@ -1,15 +1,16 @@
-package com.github.serj86.java_ecommerce.util;
+package com.github.serj86.java_ecommerce.services;
 
 import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.entities.User;
+import com.github.serj86.java_ecommerce.util.BCrypt;
 
-public class UserValidation {
+public class UserValidationService {
 
     public boolean validateUserByEmail(String email, String password) {
 	UserDAO udao = new UserDAO();
 	User user = udao.getUserByEmail(email);
 	if (user != null) {
-	    return BCrypt.checkpw(password, user.getHashedPassword());
+	    return BCrypt.checkpw(password, user.getPasswordHash());
 	}
 	return false;
     }
@@ -17,7 +18,7 @@ public class UserValidation {
     public User getValidatedUserByEmail(String email, String password) {
 	UserDAO udao = new UserDAO();
 	User user = udao.getUserByEmail(email);
-	if (user != null && BCrypt.checkpw(password, user.getHashedPassword())) {
+	if (user != null && BCrypt.checkpw(password, user.getPasswordHash())) {
 	    return user;
 	}
 	return null;
@@ -27,7 +28,7 @@ public class UserValidation {
 	UserDAO udao = new UserDAO();
 	User user = udao.getUserById(id);
 	if (user != null) {
-	    return BCrypt.checkpw(password, user.getHashedPassword());
+	    return BCrypt.checkpw(password, user.getPasswordHash());
 	}
 	return false;
     }

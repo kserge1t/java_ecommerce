@@ -96,7 +96,7 @@ public class SettingDAO {
     
     // Get setting ID by name
     public Long getSettingIdByName(String name) {
-	return getSettingByName(name).getSetting_id();
+	return getSettingByName(name).getId();
     }
 
     // Update setting value by name

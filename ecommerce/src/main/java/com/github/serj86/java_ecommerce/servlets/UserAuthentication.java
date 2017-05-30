@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.github.serj86.java_ecommerce.dto.UserDTO;
 import com.github.serj86.java_ecommerce.entities.User;
-import com.github.serj86.java_ecommerce.util.UserValidation;
+import com.github.serj86.java_ecommerce.services.UserValidationService;
 
 @WebServlet(urlPatterns = { "/login" })
 public class UserAuthentication extends HttpServlet {
@@ -30,19 +31,20 @@ public class UserAuthentication extends HttpServlet {
 	    throws ServletException, IOException {
 
 	RequestDispatcher requestDispatcher;
+	HttpSession session = request.getSession();
+
 	String email = request.getParameter("email");
 	String password = request.getParameter("password");
-	UserValidation uVal = new UserValidation();
 
-	HttpSession session = request.getSession();
-	session.setAttribute("user", uVal.getValidatedUserByEmail(email, password));
-
-	if (session.getAttribute("user") != null) {
-	    request.setAttribute("notice", "Welcome!");
+	User authenticatedUser = new UserValidationService().getValidatedUserByEmail(email, password);
+	if (authenticatedUser != null) {
+	    UserDTO uDto = new UserDTO(authenticatedUser);
+	    session.setAttribute("user", uDto);
+	    request.setAttribute("notice", "Welcome " + uDto.getFirstName() + " " + uDto.getLastName() + "!");
 	    requestDispatcher = getServletContext().getRequestDispatcher("/user-edit.jsp");
 	    requestDispatcher.forward(request, response);
 	} else {
-	    request.setAttribute("notice", "Login failed, please double-check your credentials and try again.");
+	    request.setAttribute("notice", "Login for '"+email+"' failed, please try again.");
 	    requestDispatcher = getServletContext().getRequestDispatcher("/login.jsp");
 	    requestDispatcher.forward(request, response);
 	}

@@ -28,7 +28,7 @@
 			</tr>
 			<tr id="email">
 				<td>eMail:</td>
-				<td><input type="text" name="email" placeholder="eMail" required></td>
+				<td><input type="email" name="email" placeholder="eMail" required></td>
 				<td><span class="msg"></span></td>
 			</tr>
 			<tr id="password">

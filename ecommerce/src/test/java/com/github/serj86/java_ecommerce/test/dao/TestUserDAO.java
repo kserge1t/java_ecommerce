@@ -7,11 +7,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.github.serj86.java_ecommerce.dao.GenericDAO;
 import com.github.serj86.java_ecommerce.dao.RoleDAO;
 import com.github.serj86.java_ecommerce.dao.SettingDAO;
 import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.entities.Role;
 import com.github.serj86.java_ecommerce.entities.User;
+import com.github.serj86.java_ecommerce.services.UserValidationService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -44,7 +46,7 @@ public class TestUserDAO {
 		user.setEmail(testEmail1);
 		user.setBalance(100.00);
 		user.setRoleObject(roleDao.getRoleByValue(new SettingDAO().getSettingValueByName("user_default_role")));
-		user.setHashedPassword("Secret");
+		user.setPasswordHash("Secret");
 	}
     }
 
@@ -93,33 +95,36 @@ public class TestUserDAO {
 	Double balance = 0.00;
 	String password = "Password";
 	
-	UserDAO userDao = new UserDAO();
-	User user = userDao.getUserByEmail(testEmail1);
+	UserValidationService uVal = new UserValidationService();
+	GenericDAO gDao = new GenericDAO();
+	UserDAO uDao = new UserDAO();
+	User user = uDao.getUserByEmail(testEmail1);
 	user.setFirstName(firstName);
 	user.setLastName(lasttName);
 	user.setEmail(email);
 	user.setBalance(balance);
-	user.setHashedPassword(password);
+	user.setPasswordHash(password);
 	
 	// Delete existing testing user, if any
-	if (userDao.getUserByEmail(email) != null) {
-	    userDao.deleteUserByEmail(email);
+	if (uDao.getUserByEmail(email) != null) {
+	    uDao.deleteUserByEmail(email);
 	}
 	
-	assertTrue(userDao.updateUser(user));
-	assertEquals(firstName, userDao.getUserByEmail(email).getFirstName());
-	assertEquals(lasttName, userDao.getUserByEmail(email).getLastName());
-	assertEquals(email, userDao.getUserByEmail(email).getEmail());
-	assertEquals(balance, userDao.getUserByEmail(email).getBalance());
-	assertTrue(userDao.getUserByEmail(email).validate(password));
-	assertTrue(userDao.deleteUserByEmail(email));
+	assertTrue(gDao.update(user));
+	assertEquals(firstName, uDao.getUserByEmail(email).getFirstName());
+	assertEquals(lasttName, uDao.getUserByEmail(email).getLastName());
+	assertEquals(email, uDao.getUserByEmail(email).getEmail());
+	assertEquals(balance, uDao.getUserByEmail(email).getBalance());
+	assertTrue(uVal.validateUserByEmail(email, password));
+	assertTrue(uDao.deleteUserByEmail(email));
     }
 
     @Test // OK
     public void testDeleteUser() {
-	UserDAO userDao = new UserDAO();
-	User user = userDao.getUserByEmail(testEmail1);
-	assertTrue(userDao.deleteUser(user));
+	UserDAO uDao = new UserDAO();
+	GenericDAO gDao = new GenericDAO();
+	User user = uDao.getUserByEmail(testEmail1);
+	assertTrue(gDao.delete(user));
     }
 
 //    @Test // 

@@ -8,46 +8,54 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.github.serj86.java_ecommerce.dao.SettingDAO;
 import com.github.serj86.java_ecommerce.dto.UserDTO;
 import com.github.serj86.java_ecommerce.entities.User;
 import com.github.serj86.java_ecommerce.services.UserRegistrationService;
 
-@WebServlet(urlPatterns = {"/register"})
+@WebServlet(urlPatterns = { "/register" })
 public class UserRegistration extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    RequestDispatcher requestDispatcher;
-    
+
     // Display register page for Get requests
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
+	RequestDispatcher requestDispatcher;
 	requestDispatcher = getServletContext().getRequestDispatcher("/register.jsp");
 	requestDispatcher.forward(request, response);
     }
-    
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 
+	RequestDispatcher requestDispatcher;
+	HttpSession session = request.getSession();
+
+	SettingDAO setting = new SettingDAO();
 	UserDTO uDto = new UserDTO();
 	uDto.setFirstName(request.getParameter("firstName"));
 	uDto.setLastName(request.getParameter("lastName"));
 	uDto.setEmail(request.getParameter("email"));
-	uDto.setPassword(request.getParameter("password"));
+	uDto.setPlainPassword(request.getParameter("password"));
+	uDto.setBalance(setting.getSettingValueByName("user_starting_balance"));
+	uDto.setRoleId(setting.getSettingValueByName("user_default_role_id"));
 
 	UserRegistrationService addUser = new UserRegistrationService();
-	User user = addUser.addUser(uDto);
-	
-	// Move to registration success page 
-	response.getWriter().append("<li>User First Name: "+user.getFirstName());
-	response.getWriter().append("<li>User Last Name: "+user.getLastName());
-	response.getWriter().append("<li>User Email: "+user.getEmail());
-	response.getWriter().append("<li>User Balance: "+user.getBalance());
-	response.getWriter().append("<li>User Role: "+user.getRoleObject().getRole());
-	
-	response.getWriter().append("<p>New user registration succeeeded! Please login using your email <b>"+request.getParameter("email")+"</b> and password.</p>");
-	response.getWriter().append("<p><a href='login.jsp'>Login</a></p>");
-	response.getWriter().append("<p><a href='index.jsp'>Back to Homepage</a></p>");
-	
+	User user = addUser.registerUserDto(uDto);
+
+	if (user != null) {
+	    uDto.convertUserToDto(user);
+	    session.setAttribute("user", uDto);
+	    request.setAttribute("notice", "Welcome " + uDto.getFirstName() + " " + uDto.getLastName() + "!");
+	    requestDispatcher = getServletContext().getRequestDispatcher("/user-edit.jsp");
+	} else {
+	    request.setAttribute("notice", "User registration failed!");
+	    requestDispatcher = getServletContext().getRequestDispatcher("/register.jsp");
+	}
+	requestDispatcher.forward(request, response);
+
     }
 
 }

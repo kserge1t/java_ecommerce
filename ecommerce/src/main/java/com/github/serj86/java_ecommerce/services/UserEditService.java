@@ -1,52 +1,55 @@
 package com.github.serj86.java_ecommerce.services;
 
 import com.github.serj86.java_ecommerce.dao.GenericDAO;
-import com.github.serj86.java_ecommerce.dao.RoleDAO;
 import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.dto.UserDTO;
 import com.github.serj86.java_ecommerce.entities.User;
 
 public class UserEditService {
 
-    public boolean updateUser(UserDTO uDto) {
-	User user = null;
+    public UserDTO updateUser(UserDTO updatedUserDto) {
 
-	if (uDto.getId() != null) {
-	    UserDAO uDao = new UserDAO(); 
-	    user = uDao.getUserById(uDto.getId());
-
-	    if (uDto.getFirstName().length() > 1) {
-		user.setFirstName(uDto.getFirstName());
-	    }
-
-	    if (uDto.getLastName().length() > 1) {
-		user.setLastName(uDto.getLastName());
-	    }
-
-	    if (uDto.getEmail().length() > 1) {
-		user.setEmail(uDto.getEmail());
-	    }
-
-	    if (uDto.getPassword().length() > 1) {
-		user.setHashedPassword(uDto.getPassword());
-	    }
-
-	    if (uDto.getRoleId() != null) {
-		RoleDAO rDao = new RoleDAO();
-		user.setRoleObject(rDao.getRoleById(uDto.getRoleId()));
-	    }
-
-	    if (uDto.getBalance() != null) {
-		user.setBalance(uDto.getBalance());
-	    } 
-		System.out.println("Balace: "+uDto.getBalance());
-
-	    GenericDAO gDao = new GenericDAO();
-	    return gDao.update(user);
-
+	User originalUser;
+	try {
+	    originalUser = new UserDAO().getUserById(Long.parseLong(updatedUserDto.getId()));
+	} catch (Exception e) {
+	    System.out.println("Error: Could not get original user by id");
+	    return null;
 	}
 
-	return false;
+	if (updatedUserDto.getEmail() == null || updatedUserDto.getEmail().isEmpty()) {
+	    updatedUserDto.setEmail(originalUser.getEmail());
+	}
+
+	if (updatedUserDto.getFirstName() == null || updatedUserDto.getFirstName().isEmpty()) {
+	    updatedUserDto.setFirstName(originalUser.getFirstName());
+	}
+
+	if (updatedUserDto.getLastName() == null || updatedUserDto.getLastName().isEmpty()) {
+	    updatedUserDto.setLastName(originalUser.getLastName());
+	}
+
+	// Admin users only
+	if (updatedUserDto.getBalance() == null || updatedUserDto.getBalance().isEmpty() || originalUser.getRoleObject().getId() != 1) {
+	    updatedUserDto.setBalance(originalUser.getBalance());
+	}
+
+	// Admin users only
+	if (updatedUserDto.getRoleId() == null || updatedUserDto.getRoleId().isEmpty() || originalUser.getRoleObject().getId() != 1) {
+	    updatedUserDto.setRoleId(originalUser.getRoleObject().getId());
+	    updatedUserDto.setRoleName(originalUser.getRoleObject().getRole());
+	}
+
+	if (((updatedUserDto.getPlainPassword() == null) || updatedUserDto.getPlainPassword().isEmpty())
+		&& ((updatedUserDto.getHashedPassword() == null) || (updatedUserDto.getHashedPassword().isEmpty()))) {
+	    updatedUserDto.setHashedPassword(originalUser.getPasswordHash());
+	}
+
+	if (new GenericDAO().update(updatedUserDto.convertDtoToUser())) {
+	    return updatedUserDto;
+	} else {
+	    return null;
+	}
     }
 
 }
