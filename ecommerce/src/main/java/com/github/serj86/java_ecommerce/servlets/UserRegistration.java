@@ -23,7 +23,7 @@ public class UserRegistration extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	RequestDispatcher requestDispatcher;
-	requestDispatcher = getServletContext().getRequestDispatcher("/register.jsp");
+	requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	requestDispatcher.forward(request, response);
     }
 
@@ -49,10 +49,10 @@ public class UserRegistration extends HttpServlet {
 	    uDto.convertUserToDto(user);
 	    session.setAttribute("user", uDto);
 	    request.setAttribute("notice", "Welcome " + uDto.getFirstName() + " " + uDto.getLastName() + "!");
-	    requestDispatcher = getServletContext().getRequestDispatcher("/user-edit.jsp");
+	    requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	} else {
 	    request.setAttribute("notice", "User registration failed!");
-	    requestDispatcher = getServletContext().getRequestDispatcher("/register.jsp");
+	    requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	}
 	requestDispatcher.forward(request, response);
 

@@ -22,7 +22,7 @@ public class UserEdit extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	RequestDispatcher requestDispatcher;
-	requestDispatcher = getServletContext().getRequestDispatcher("/user-edit.jsp");
+	requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	requestDispatcher.forward(request, response);
     }
 
@@ -54,7 +54,7 @@ public class UserEdit extends HttpServlet {
 		request.setAttribute("notice", "User edit failed!");
 	    }
 
-	    requestDispatcher = getServletContext().getRequestDispatcher("/user-edit.jsp");
+	    requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	    requestDispatcher.forward(request, response);
 
 	} else {
@@ -64,7 +64,7 @@ public class UserEdit extends HttpServlet {
 		requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	    } else {
 		request.setAttribute("notice", "User deletion failed!");
-		requestDispatcher = getServletContext().getRequestDispatcher("/user-edit.jsp");
+		requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	    }
 	    requestDispatcher.forward(request, response);
 	}

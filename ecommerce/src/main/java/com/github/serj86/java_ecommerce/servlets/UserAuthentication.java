@@ -23,7 +23,7 @@ public class UserAuthentication extends HttpServlet {
 	    throws ServletException, IOException {
 	RequestDispatcher requestDispatcher;
 	request.setAttribute("notice", "Please login using eMail and Password.");
-	requestDispatcher = getServletContext().getRequestDispatcher("/login.jsp");
+	requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	requestDispatcher.forward(request, response);
     }
 
@@ -41,11 +41,11 @@ public class UserAuthentication extends HttpServlet {
 	    UserDTO uDto = new UserDTO(authenticatedUser);
 	    session.setAttribute("user", uDto);
 	    request.setAttribute("notice", "Welcome " + uDto.getFirstName() + " " + uDto.getLastName() + "!");
-	    requestDispatcher = getServletContext().getRequestDispatcher("/user-edit.jsp");
+	    requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	    requestDispatcher.forward(request, response);
 	} else {
 	    request.setAttribute("notice", "Login for '"+email+"' failed, please try again.");
-	    requestDispatcher = getServletContext().getRequestDispatcher("/login.jsp");
+	    requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	    requestDispatcher.forward(request, response);
 	}
     }
