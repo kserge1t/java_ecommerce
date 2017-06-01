@@ -36,29 +36,20 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="index.jsp">Home</a></li>
-						<li>
-							<a href="" class="icon fa-angle-down">Account</a>
-							<ul>
-								<c:if test = "${empty sessionScope.user}">
-									<li><a href="#login">Login</a></li>
-									<li><a href="#register">Register</a></li>
-								</c:if>
-								<c:if test = "${not empty sessionScope.user}">
+						<c:if test = "${empty sessionScope.user}">
+							<li><a href="#login">Login</a></li>
+							<li><a href="#register">Register</a></li>
+						</c:if>
+						<c:if test = "${not empty sessionScope.user}">
+							<li>
+								<a href="" class="icon fa-angle-down">Account</a>
+								<ul>
 									<li><a href="#edit">Edit User</a></li>
 									<li><a href="logout">Logout</a></li>
-								</c:if>
-								<li>
-									<a href="">Old JSP Pages</a>
-									<ul>
-										<li><a href="old_index.jsp">Index</a></li>
-										<li><a href="old_login.jsp">Login</a></li>
-										<li><a href="old_register.jsp">Register</a></li>
-										<li><a href="old_user-edit.jsp">Edit User</a></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li><a href="#">Shop</a></li>
+								</ul>
+							</li>
+							<li><a href="#">Cart</a></li>
+						</c:if>
 					</ul>
 				</nav>
 			</header>
