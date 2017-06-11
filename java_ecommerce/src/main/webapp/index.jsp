@@ -71,7 +71,7 @@
 							<div class="row uniform">
 								<div class="12u">
 									<ul class="actions">
-										<li><input type="submit" value="Login" disabled></li>
+										<li><input type="submit" value="Login" class="special" disabled></li>
 										<li><input type="reset" value="Clear" class="alt" /></li>
 									</ul>
 								</div>
@@ -119,7 +119,7 @@
 						<div class="row uniform">
 							<div class="12u">
 								<ul class="actions">
-									<li><input type="submit" value="Register" disabled></li>
+									<li><input type="submit" value="Register" class="special" disabled></li>
 									<li><input type="reset" value="Clear" class="alt" /></li>
 								</ul>
 							</div>
@@ -218,7 +218,7 @@
 						<div class="row uniform">
 							<div class="12u">
 								<ul class="actions">
-									<li><input type="submit" value="Confirm"></li>
+									<li><input type="submit" value="Confirm" class="special" disabled></li>
 									<li><input type="reset" value="Clear" class="alt" /></li>
 								</ul>
 							</div>
