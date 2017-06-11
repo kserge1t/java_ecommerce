@@ -42,8 +42,8 @@
 					<c:if test = "${empty sessionScope.user}">
 					<p>Please login or register.</p>
 					<ul class="actions">
-						<li><a href="#login" class="button big scrolly">Login</a></li>
-						<li><a href="#register" class="button big scrolly">Register</a></li>
+						<li><a href="#login" class="button big scrolly icon fa-user">Login</a></li>
+						<li><a href="#register" class="button big scrolly icon fa-user-plus">Register</a></li>
 					</ul>
 					</c:if>
 					

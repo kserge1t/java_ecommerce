@@ -3,29 +3,29 @@
 <nav id="nav">
 	<ul>
 	
-		<li><a href="index.jsp">Home</a></li>
+		<li><a href="index.jsp" class="icon fa-home">Home</a></li>
 		<c:if test = "${empty sessionScope.user}">
-			<li><a href="index.jsp#login">Login</a></li>
-			<li><a href="index.jsp#register">Register</a></li>
+			<li><a href="index.jsp#login" class="icon fa-user">Login</a></li>
+			<li><a href="index.jsp#register" class="icon fa-user-plus">Register</a></li>
 		</c:if>
 		
-		<li><a href="catalog">Catalog</a></li>
+		<li><a href="catalog" class="icon fa-book">Catalog</a></li>
+		<li><a href="cart.jsp" class="icon fa-shopping-cart">Cart <c:if test = "${items.size() > 0}">(${items.size()})</c:if></a></li>
 		
 		<c:if test = "${not empty sessionScope.user}">
-			
-			<li><a href="cart.jsp">Cart</a></li>
-		
+
 			<li>
-				<a href="" class="icon fa-angle-down">Account</a>
+				<a href="" class="icon fa-caret-down">Account</a>
 				<ul>
-					<li><a href="index.jsp#edit">Edit User</a></li>
-					<li><a href="logout">Logout</a></li>
+					<li><a href="index.jsp#edit" class="icon fa-edit">&nbsp;Edit User</a></li>
+					<li><a href="logout" class="icon fa-sign-out">&nbsp;Logout</a></li>
 				</ul>
 			</li>
 			
+			<%-- 
 			<c:if test = "${sessionScope.user.roleId == 1}">
 				<li>
-					<a href="" class="icon fa-angle-down">Manage</a>
+					<a href="" class="icon fa-caret-down">Manage</a>
 					<ul>
 						<li>
 							<a href="" class="icon fa-angle-left"> Store</a>
@@ -44,6 +44,7 @@
 					</ul>
 				</li>
 			</c:if>
+			 --%>
 			
 		</c:if>
 		

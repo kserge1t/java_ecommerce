@@ -20,7 +20,7 @@ public class UserLogout extends HttpServlet {
 	
 	RequestDispatcher requestDispatcher;
 	HttpSession session = request.getSession();
-	session.setAttribute("user", null);
+	session.invalidate();
 
 	request.setAttribute("notice", "You have been logged out.");
 	requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
@@ -33,7 +33,7 @@ public class UserLogout extends HttpServlet {
 
 	RequestDispatcher requestDispatcher;
 	HttpSession session = request.getSession();
-	session.setAttribute("user", null);
+	session.invalidate();
 
 	request.setAttribute("notice", "You have been logged out.");
 	requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");

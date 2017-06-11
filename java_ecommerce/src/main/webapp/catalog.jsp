@@ -43,7 +43,7 @@
 				<h2>Products Catalog</h2>
 				<p>Total products: <c:out value="${products.size()}">0</c:out></p>
 			</header>
-			<div class="row">
+			<div class="container row">
 				<c:forEach items="${products}" var="product">
 					<div class="4u 6u(2) 12u$(3)">
 						<article class="box post">
@@ -83,7 +83,7 @@
 								    	<li><span class="button disabled fit">Inactive</span></li>
 									</c:when>
 									<c:otherwise>
-										<li><a href="add?sku=${product.sku}" class="button special fit">To Cart</a></li>
+										<li><a href="cart?add=${product.sku}" class="button special fit">To Cart</a></li>
 									</c:otherwise>
 								</c:choose>
 							</ul>
