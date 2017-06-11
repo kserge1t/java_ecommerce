@@ -83,7 +83,7 @@
 								    	<li><span class="button disabled fit">Inactive</span></li>
 									</c:when>
 									<c:otherwise>
-										<li><a href="cart?add=${product.sku}" class="button special fit">To Cart</a></li>
+										<li><a href="cart?add-sku=${product.sku}" class="button special fit">To Cart</a></li>
 									</c:otherwise>
 								</c:choose>
 							</ul>

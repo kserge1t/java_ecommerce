@@ -1,10 +1,6 @@
 package com.github.serj86.java_ecommerce.servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,53 +21,32 @@ public class Cart extends HttpServlet {
 	RequestDispatcher requestDispatcher;
 	HttpSession session = request.getSession();
 	
-	// pDao.getProductsByFilter(active, minStock, maxStock, minPrice, maxPrice, category);
-	//request.setAttribute("products", new ProductDAO().getProductsByFilter(true, 1, null, null, null, null));
-	//List items = (List) session.getAttribute("items");
+	CartService cart = (CartService) session.getAttribute("cart");
+	if (cart == null) {
+	    cart = new CartService();
+	}
+	String dispatchUrl = "/cart.jsp";
 	
-//	List items = new ArrayList();
-//	System.out.println("request.getParameter('sku'): "+request.getParameter("sku"));
-//	items.add(new ProductDAO().getProductBySku(request.getParameter("sku")));
-	
-	CartService cartService = new CartService();
-	HashMap items = null;
-	String msgOk = "Cart updated";
-	String msgKo = null;
-	String url = "/cart.jsp";
-	
-	if (request.getParameter("add") != null) {
-	    items = cartService.add(request.getParameter("add"), (HashMap) session.getAttribute("items"));
-	    url = "/catalog";
-	    msgOk = "Item SKU: \""+request.getParameter("add")+"\" was added to your shopping cart.";
-	    msgKo = "Item SKU: \""+request.getParameter("add")+"\" is out of stock or inactive.";
+	if (request.getParameter("add-sku") != null) {
+	    cart.addProductBySku(request.getParameter("add-sku"));
+	    dispatchUrl = "/catalog";
 	}
 	
-	if (request.getParameter("inc") != null) {
-	    items = cartService.add(request.getParameter("inc"), (HashMap) session.getAttribute("items"));
-	    msgOk = "Item SKU: \""+request.getParameter("inc")+"\" quantity increased.";
-	    msgKo = "Item SKU: \""+request.getParameter("inc")+"\" - Requested quantity is not available, or item is inactive.";
+	if (request.getParameter("inc-sku") != null) {
+	    cart.addProductBySku(request.getParameter("inc-sku"));
 	}
 	
-	if (request.getParameter("dec") != null) {
-	    items = cartService.subtract(request.getParameter("dec"), (HashMap) session.getAttribute("items"));
-	    msgOk = "Item SKU: \""+request.getParameter("dec")+"\" quantity decreased.";
-	    msgKo = "Item SKU: \""+request.getParameter("dec")+"\" - Requested quantity is no longer available, or item is inactive.";
+	if (request.getParameter("dec-sku") != null) {
+	    cart.subtractQuantityBySku(request.getParameter("dec-sku"));
 	}
 	
-	if (request.getParameter("rem") != null) {
-	    items = cartService.remove(request.getParameter("rem"), (HashMap) session.getAttribute("items"));
-	    msgOk = "Item SKU: \""+request.getParameter("rem")+"\" was removed from your shopping cart.";
-	    msgKo = "Item SKU: \""+request.getParameter("rem")+"\" remove unsuccessful!";
-	}
-	    
-	if (items != null) {
-	    session.setAttribute("items", items);
-	    request.setAttribute("notice", msgOk);
-	} else {
-	    request.setAttribute("notice", msgKo);
+	if (request.getParameter("rem-sku") != null) {
+	    cart.removeProductBySku(request.getParameter("rem-sku"));
 	}
 	
-	requestDispatcher = getServletContext().getRequestDispatcher(url);
+	session.setAttribute("cart", cart);
+	request.setAttribute("notice", cart.getMessage());
+	requestDispatcher = getServletContext().getRequestDispatcher(dispatchUrl);
 	requestDispatcher.forward(request, response);
 
     }

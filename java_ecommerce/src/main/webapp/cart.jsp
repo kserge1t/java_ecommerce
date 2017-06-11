@@ -42,10 +42,10 @@
 		
 			<header class="major">
 				<h2>Shopping Cart</h2>
-				<p>You have <c:out value="${items.size()}">no</c:out> item(s) in your shopping cart.</p>
+				<p>You have <c:out value="${cart.getProductsMap().size()}">no</c:out> item(s) in your shopping cart.</p>
 			</header>
 			
-			<c:if test = "${items.size() > 0}">
+			<c:if test = "${cart.getProductsMap().size() > 0}">
 				<div class="table-wrapper">
 					<table class="alt">
 						<thead>
@@ -59,8 +59,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:set var = "total" scope = "session" value = "0"/>
-							<c:forEach items="${items}" var="item">
+							<c:forEach items="${cart.getProductsMap()}" var="item">
 								<tr>
 									<td><a href="#" class="image fit"><img	src="${item.value.mainImage}" alt=""/></a></td>
 									<td class="align-center"><h5>${item.value.sku}</h5></td>
@@ -68,24 +67,23 @@
 									<td class="align-right"><fmt:formatNumber value="${item.value.price}" type="currency" /></td>
 									<td class="align-center">
 										<div class="12u">
-											<a href="cart?inc=${item.value.sku}" class="icon fa-plus-square"></a>
+											<a href="cart?inc-sku=${item.value.sku}" class="icon fa-plus-square"></a>
 											&nbsp;&nbsp;&nbsp;<b>${item.value.stock}</b>&nbsp;&nbsp;&nbsp;
-											<a href="cart?dec=${item.value.sku}" class="icon fa-minus-square"></a>
+											<a href="cart?dec-sku=${item.value.sku}" class="icon fa-minus-square"></a>
 										</div>
 										<div class="12u">
-											<a href="cart?rem=${item.value.sku}" class="icon fa-remove">&nbsp;Remove</a>
+											<a href="cart?rem-sku=${item.value.sku}" class="icon fa-remove">&nbsp;Remove</a>
 										</div>
 									</td>
 									<td class="align-right"><b><fmt:formatNumber value="${item.value.price * item.value.stock}" type="currency" /></b></td>
 								</tr>
-							<c:set var = "total" scope = "session" value = "${total + item.value.price * item.value.stock}"/>
 							</c:forEach>
 						</tbody>
 						<tfoot>
 							<tr>
 								<td colspan="4"></td>
 								<td class="align-right">Grand Total:</td>
-								<td class="align-right"><strong><em><fmt:formatNumber value="${total}" type="currency" /></em></strong></td>
+								<td class="align-right"><strong><em><fmt:formatNumber value="${cart.getTotal()}" type="currency" /></em></strong></td>
 							</tr>
 						</tfoot>
 					</table>

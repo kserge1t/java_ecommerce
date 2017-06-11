@@ -10,7 +10,7 @@
 		</c:if>
 		
 		<li><a href="catalog" class="icon fa-book">Catalog</a></li>
-		<li><a href="cart.jsp" class="icon fa-shopping-cart">Cart <c:if test = "${items.size() > 0}">(${items.size()})</c:if></a></li>
+		<li><a href="cart.jsp" class="icon fa-shopping-cart">Cart <c:if test = "${cart.getProductsMap().size() > 0}">(${cart.getProductsMap().size()})</c:if></a></li>
 		
 		<c:if test = "${not empty sessionScope.user}">
 
@@ -44,7 +44,7 @@
 					</ul>
 				</li>
 			</c:if>
-			 --%>
+			--%>
 			
 		</c:if>
 		
