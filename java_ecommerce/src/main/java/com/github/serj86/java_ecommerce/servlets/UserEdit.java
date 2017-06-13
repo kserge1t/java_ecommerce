@@ -18,7 +18,7 @@ import com.github.serj86.java_ecommerce.services.UserEditService;
 public class UserEdit extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // Display register page for Get requests
+    // Display homepage page for Get requests
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 	RequestDispatcher requestDispatcher;

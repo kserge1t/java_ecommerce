@@ -37,6 +37,7 @@ public class UserAuthentication extends HttpServlet {
 	String password = request.getParameter("password");
 
 	User authenticatedUser = new UserValidationService().getValidatedUserByEmail(email, password);
+	
 	if (authenticatedUser != null) {
 	    UserDTO uDto = new UserDTO(authenticatedUser);
 	    session.setAttribute("user", uDto);

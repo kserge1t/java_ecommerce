@@ -52,7 +52,7 @@
 
 		<!-- Login Form -->
 		<c:if test = "${empty sessionScope.user}">
-			<section id="login" class="wrapper style1">
+			<section id="login" class="wrapper style2">
 				<div class="container">
 					<header class="major">
 						<h2>Existing users login form</h2>
@@ -132,7 +132,7 @@
 		
 		<!-- Edit Form -->
 		<c:if test = "${not empty sessionScope.user}">
-			<section id="edit" class="wrapper style2">
+			<section id="edit" class="wrapper style1">
 				<div id="cta" class="container">
 					<h2>Edit user</h2>
 					<p>Input values to change</p>

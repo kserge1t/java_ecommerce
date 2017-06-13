@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import com.github.serj86.java_ecommerce.services.CartService;
 
 @WebServlet(urlPatterns = { "/cart" })
-public class Cart extends HttpServlet {
+public class CartServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,8 +44,15 @@ public class Cart extends HttpServlet {
 	    cart.removeProductBySku(request.getParameter("rem-sku"));
 	}
 	
-	session.setAttribute("cart", cart);
-	request.setAttribute("notice", cart.getMessage());
+	if (request.getParameter("empty") != null) {
+	    session.setAttribute("cart", null);
+	    request.setAttribute("notice", "Shopping cart has been emptied.");
+	} else {
+	    session.setAttribute("cart", cart);
+	    request.setAttribute("notice", cart.getMessage());
+	}
+	
+
 	requestDispatcher = getServletContext().getRequestDispatcher(dispatchUrl);
 	requestDispatcher.forward(request, response);
 

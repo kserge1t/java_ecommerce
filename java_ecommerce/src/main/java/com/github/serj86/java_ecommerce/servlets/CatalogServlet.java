@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.github.serj86.java_ecommerce.dao.ProductDAO;
 
 @WebServlet(urlPatterns = { "/catalog" })
-public class Catalog extends HttpServlet {
+public class CatalogServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

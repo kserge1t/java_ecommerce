@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>eCommerce Catalog</title>
+<title>eCommerce Shopping Cart</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="description" content="" />
 <meta name="keywords" content="" />
@@ -36,16 +36,16 @@
 		<c:import url="includes/header_content.jsp" />
 	</header>
 
-	<!-- Catalog -->
-	<section id="catalog" class="wrapper style1">
+	<!-- Shopping Cart -->
+	<section id="cart" class="wrapper style1">
 		<div class="container">
 		
 			<header class="major">
 				<h2>Shopping Cart</h2>
-				<p>You have <c:out value="${cart.getProductsMap().size()}">no</c:out> item(s) in your shopping cart.</p>
+				<p>You have <c:out value="${sessionScope.cart.getProductsMap().size()}">no</c:out> item(s) in your shopping cart.</p>
 			</header>
 			
-			<c:if test = "${cart.getProductsMap().size() > 0}">
+			<c:if test = "${sessionScope.cart.getProductsMap().size() > 0}">
 				<div class="table-wrapper">
 					<table class="alt">
 						<thead>
@@ -59,7 +59,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${cart.getProductsMap()}" var="item">
+							<c:forEach items="${sessionScope.cart.getProductsMap()}" var="item">
 								<tr>
 									<td><a href="#" class="image fit"><img	src="${item.value.mainImage}" alt=""/></a></td>
 									<td class="align-center"><h5>${item.value.sku}</h5></td>
@@ -67,9 +67,9 @@
 									<td class="align-right"><fmt:formatNumber value="${item.value.price}" type="currency" /></td>
 									<td class="align-center">
 										<div class="12u">
-											<a href="cart?inc-sku=${item.value.sku}" class="icon fa-plus-square"></a>
-											&nbsp;&nbsp;&nbsp;<b>${item.value.stock}</b>&nbsp;&nbsp;&nbsp;
 											<a href="cart?dec-sku=${item.value.sku}" class="icon fa-minus-square"></a>
+											&nbsp;&nbsp;&nbsp;<b>${item.value.stock}</b>&nbsp;&nbsp;&nbsp;
+											<a href="cart?inc-sku=${item.value.sku}" class="icon fa-plus-square"></a>
 										</div>
 										<div class="12u">
 											<a href="cart?rem-sku=${item.value.sku}" class="icon fa-remove">&nbsp;Remove</a>
@@ -81,18 +81,66 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="4"></td>
+								<td colspan="4"  class="align-right">
+									<a href="cart?empty" class="button icon fa-remove">Empty Shopping Cart</a>
+								</td>
 								<td class="align-right">Grand Total:</td>
-								<td class="align-right"><strong><em><fmt:formatNumber value="${cart.getTotal()}" type="currency" /></em></strong></td>
+								<td class="align-right"><strong><em><fmt:formatNumber value="${sessionScope.cart.getTotal()}" type="currency" /></em></strong></td>
 							</tr>
 						</tfoot>
 					</table>
 				</div>
+				
+				<!-- Login -->
+				<c:if test = "${empty sessionScope.user}">
+					<section id="login" class="wrapper style3">
+						<div id="cta" class="inner">
+							<h3>Please login or register to checkout.</h3>
+							<ul class="actions">
+								<li><a href="index.jsp#login" class="button big scrolly icon fa-user">Login</a></li>
+								<li><a href="index.jsp#register" class="button big scrolly icon fa-user-plus">Register</a></li>
+							</ul>
+						</div>
+					</section>
+				</c:if>
+				
+				<!-- Checkout -->
+				<c:if test = "${not empty sessionScope.user}">
+					<section id="checkout" class="wrapper style2 align-center">
+
+
+						<div id="cta" class="inner">
+							<h4>Checkout</h4>
+							<p><c:out value="${sessionScope.user.firstName}">Guest</c:out>, your available balance is: <b><fmt:formatNumber value="${sessionScope.user.balance}" type="currency" /></b>, order total is: <fmt:formatNumber value="${sessionScope.cart.getTotal()}" type="currency" /></p>
+							
+
+							
+							<c:choose>
+								<c:when test="${sessionScope.user.balance >= sessionScope.cart.getTotal()}">
+									<p>After placing the order your remaining balance will be: <b><fmt:formatNumber value="${sessionScope.user.balance - sessionScope.cart.getTotal()}" type="currency" /></b>.</p>
+									<ul class="actions">
+										<li><a href="/checkout" class="button big scrolly special icon fa-check-square-o">Place Order</a></li>
+									</ul>
+							  	</c:when>
+							  	<c:otherwise>
+							  		<p>Insufficient amount: <b><i><fmt:formatNumber value="${sessionScope.cart.getTotal() - sessionScope.user.balance}" type="currency" /></i></b>.</p>
+									<ul class="actions">
+										<li><span class="button big scrolly special disabled">Place Order</span></li>
+									</ul>
+							  	</c:otherwise>
+							</c:choose>
+		
+						</div>
+
+					</section>
+				</c:if>
+				
 			</c:if>
-			
 		</div>
 	</section>
+					
 
+					
 	<!-- Footer -->
 	<c:import url="includes/footer.jsp" />
 
