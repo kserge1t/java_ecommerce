@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.github.serj86.java_ecommerce.dao.GenericDAO;
 import com.github.serj86.java_ecommerce.dto.UserDTO;
 import com.github.serj86.java_ecommerce.entities.User;
-import com.github.serj86.java_ecommerce.services.UserEditService;
+import com.github.serj86.java_ecommerce.services.UserService;
 
 @WebServlet(urlPatterns = { "/user-edit" })
 public class UserEdit extends HttpServlet {
@@ -43,8 +43,8 @@ public class UserEdit extends HttpServlet {
 	    userDto.setBalance(request.getParameter("balance"));
 	    userDto.setRole(request.getParameter("roleId"));
 
-	    UserEditService editUser = new UserEditService();
-	    User user = editUser.updateUser(userDto.convertToUser());
+	    UserService userService = new UserService();
+	    User user = userService.updateUser(userDto.convertToUser());
 
 	    if (user != null) {
 		session.setAttribute("user", user); // update session

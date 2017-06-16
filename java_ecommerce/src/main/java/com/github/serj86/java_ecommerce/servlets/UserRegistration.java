@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.github.serj86.java_ecommerce.dao.RoleDAO;
 import com.github.serj86.java_ecommerce.dao.SettingDAO;
 import com.github.serj86.java_ecommerce.entities.User;
-import com.github.serj86.java_ecommerce.services.UserRegistrationService;
+import com.github.serj86.java_ecommerce.services.UserService;
 
 @WebServlet(urlPatterns = { "/register" })
 public class UserRegistration extends HttpServlet {
@@ -42,8 +42,8 @@ public class UserRegistration extends HttpServlet {
 	user.setBalance(Double.parseDouble(setting.getSettingValueByName("user_starting_balance")));
 	user.setRole(new RoleDAO().getRoleById(Long.parseLong(setting.getSettingValueByName("user_default_role_id"))));
 
-	UserRegistrationService addUser = new UserRegistrationService();
-	user = addUser.registerUserDto(user);
+	UserService userService = new UserService();
+	user = userService.registerUser(user);
 
 	if (user != null) {
 	    session.setAttribute("user", user);

@@ -12,8 +12,8 @@ import com.github.serj86.java_ecommerce.entities.User;
 
 public class OrderService {
 
-    private String message = null;
     private Order order = new Order();
+    private String message = null;
 
     /* Order Message Methods */
     public String getMessage() {

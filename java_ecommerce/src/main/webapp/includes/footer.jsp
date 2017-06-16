@@ -14,6 +14,6 @@
 		</c:if>
 	</ul>
 	<span class="copyright">
-		&copy; Copyright <fmt:formatDate value="${date}" pattern="yyyy" />. All rights reserved &nbsp; <a href="https://github.com/serj86" target="_blank" class="icon fa-github">&nbsp;&nbsp;serj86</a>. Design by <a href="http://www.html5webtemplates.co.uk">Responsive Web Templates</a>
+		&copy; Copyright <fmt:formatDate value="${date}" pattern="yyyy" />. All rights reserved &nbsp; <a href="https://github.com/serj86/java_ecommerce" target="_blank" class="icon fa-github">&nbsp;&nbsp;serj86</a>. Design by <a href="http://www.html5webtemplates.co.uk">Responsive Web Templates</a>
 	</span>
 </footer>

@@ -12,7 +12,7 @@ import com.github.serj86.java_ecommerce.dao.RoleDAO;
 import com.github.serj86.java_ecommerce.dao.SettingDAO;
 import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.entities.User;
-import com.github.serj86.java_ecommerce.services.UserValidationService;
+import com.github.serj86.java_ecommerce.services.UserService;
 import com.github.serj86.java_ecommerce.util.BCrypt;
 
 public class TestUserValidation {
@@ -52,22 +52,22 @@ public class TestUserValidation {
 
     @Test
     public void testValidateUserByEmail() {
-	UserValidationService uVal = new UserValidationService();
-	assertTrue(uVal.validateUserByEmail(testEmail, testPassword));
+	UserService userService = new UserService();
+	assertTrue(userService.validateUserByEmail(testEmail, testPassword));
     }
 
     @Test
     public void testGetValidatedUserByEmail() {
 	UserDAO userDao = new UserDAO();
-	UserValidationService uVal = new UserValidationService();
-	assertEquals(userDao.getUserByEmail(testEmail).getId(), uVal.getValidatedUserByEmail(testEmail, testPassword).getId());
+	UserService userService = new UserService();
+	assertEquals(userDao.getUserByEmail(testEmail).getId(), userService.getValidatedUserByEmail(testEmail, testPassword).getId());
     }
 
     @Test
     public void testValidateUserById() {
 	UserDAO userDao = new UserDAO();
-	UserValidationService uVal = new UserValidationService();
-	assertTrue(uVal.validateUserById(userDao.getUserByEmail(testEmail).getId(), testPassword));
+	UserService userService = new UserService();
+	assertTrue(userService.validateUserById(userDao.getUserByEmail(testEmail).getId(), testPassword));
     }
 
     @AfterClass

@@ -12,7 +12,7 @@ import com.github.serj86.java_ecommerce.dao.RoleDAO;
 import com.github.serj86.java_ecommerce.dao.SettingDAO;
 import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.entities.User;
-import com.github.serj86.java_ecommerce.services.UserValidationService;
+import com.github.serj86.java_ecommerce.services.UserService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -94,7 +94,7 @@ public class TestUserDAO {
 	Double balance = 0.00;
 	String password = "Password";
 	
-	UserValidationService uVal = new UserValidationService();
+	UserService userService = new UserService();
 	GenericDAO gDao = new GenericDAO();
 	UserDAO uDao = new UserDAO();
 	User user = uDao.getUserByEmail(testEmail1);
@@ -114,7 +114,7 @@ public class TestUserDAO {
 	assertEquals(lasttName, uDao.getUserByEmail(email).getLastName());
 	assertEquals(email, uDao.getUserByEmail(email).getEmail());
 	assertEquals(balance, uDao.getUserByEmail(email).getBalance());
-	assertTrue(uVal.validateUserByEmail(email, password));
+	assertTrue(userService.validateUserByEmail(email, password));
 	assertTrue(uDao.deleteUserByEmail(email));
     }
 
