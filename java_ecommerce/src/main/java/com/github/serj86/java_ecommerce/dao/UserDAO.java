@@ -5,7 +5,6 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.github.serj86.java_ecommerce.entities.Product;
 import com.github.serj86.java_ecommerce.entities.Role;
 import com.github.serj86.java_ecommerce.entities.User;
 

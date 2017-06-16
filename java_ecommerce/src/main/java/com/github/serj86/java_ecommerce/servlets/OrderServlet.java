@@ -14,7 +14,7 @@ import com.github.serj86.java_ecommerce.entities.User;
 import com.github.serj86.java_ecommerce.services.OrderService;
 
 @WebServlet(urlPatterns = { "/cart" })
-public class CartServlet extends HttpServlet {
+public class OrderServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,6 +58,7 @@ public class CartServlet extends HttpServlet {
 	if (request.getParameter("submit") != null && session.getAttribute("user") != null && session.getAttribute("order") != null) {
 	    if (orderService.submitOrder((User) session.getAttribute("user"))){
 	    	session.setAttribute("order", null);
+	    	dispatchUrl = "/orders.jsp";
 	    }
 	    request.setAttribute("notice", orderService.getMessage());
 	}

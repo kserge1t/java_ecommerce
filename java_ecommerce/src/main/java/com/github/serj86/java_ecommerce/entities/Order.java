@@ -3,8 +3,6 @@ package com.github.serj86.java_ecommerce.entities;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +35,7 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval=true)
     @JoinColumn(name="order_id")
     @MapKey(name = "sku")
-    private Map<String, CartItem> cartItemsMap = new TreeMap<String, CartItem>();
+    private Map<String, CartItem> cartItemsMap = new HashMap<String, CartItem>();
 
 
     public Long getId() {

@@ -1,8 +1,7 @@
 package com.github.serj86.java_ecommerce.entities;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.transaction.Transactional;
-
 import com.github.serj86.java_ecommerce.util.BCrypt;
 
 @Entity(name="users")
@@ -44,7 +41,7 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy="user", fetch = FetchType.EAGER, orphanRemoval=true)
-    private Set<Order> orders = new TreeSet<Order>();
+    private Set<Order> orders = new HashSet<Order>();
 
     public Role getRole() {
 	return role;

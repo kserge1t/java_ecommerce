@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.github.serj86.java_ecommerce.dao.GenericDAO;
-import com.github.serj86.java_ecommerce.dao.RoleDAO;
-import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.dto.UserDTO;
 import com.github.serj86.java_ecommerce.entities.User;
 import com.github.serj86.java_ecommerce.services.UserEditService;

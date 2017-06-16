@@ -1,15 +1,8 @@
 package com.github.serj86.java_ecommerce.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.serj86.java_ecommerce.dao.CategoryDAO;
 import com.github.serj86.java_ecommerce.dao.GenericDAO;
 import com.github.serj86.java_ecommerce.dao.ProductDAO;
-import com.github.serj86.java_ecommerce.dao.SettingDAO;
-import com.github.serj86.java_ecommerce.entities.Category;
-import com.github.serj86.java_ecommerce.entities.Product;
-import com.github.serj86.java_ecommerce.entities.Setting;
 
 public class test {
 
