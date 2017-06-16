@@ -46,7 +46,7 @@ public class TestUserDAO {
 		user.setLastName("Tset");
 		user.setEmail(testEmail1);
 		user.setBalance(100.00);
-		user.setRoleObject(roleDao.getRoleById(Integer.parseInt(new SettingDAO().getSettingValueByName("user_default_role_id"))));
+		user.setRole(roleDao.getRoleById(Integer.parseInt(new SettingDAO().getSettingValueByName("user_default_role_id"))));
 		user.setPasswordHash("Secret");
 		
 		gDao.add(user);

@@ -2,13 +2,11 @@ package com.github.serj86.java_ecommerce.services;
 
 import com.github.serj86.java_ecommerce.dao.GenericDAO;
 import com.github.serj86.java_ecommerce.dao.UserDAO;
-import com.github.serj86.java_ecommerce.dto.UserDTO;
 import com.github.serj86.java_ecommerce.entities.User;
 
 public class UserRegistrationService {
 
-    public User registerUserDto(UserDTO uDto) {
-	User user = uDto.convertDtoToUser();
+    public User registerUserDto(User user) {
 	if (new UserDAO().getUserByEmail(user.getEmail()) == null) {
 	    if (registerUser(user)) {
 		return user;

@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.github.serj86.java_ecommerce.dao.GenericDAO;
+import com.github.serj86.java_ecommerce.dao.RoleDAO;
 import com.github.serj86.java_ecommerce.dao.UserDAO;
 import com.github.serj86.java_ecommerce.dto.UserDTO;
+import com.github.serj86.java_ecommerce.entities.User;
 import com.github.serj86.java_ecommerce.services.UserEditService;
 
 @WebServlet(urlPatterns = { "/user-edit" })
@@ -31,24 +34,22 @@ public class UserEdit extends HttpServlet {
 
 	RequestDispatcher requestDispatcher;
 	HttpSession session = request.getSession();
+	UserDTO userDto = new UserDTO((User) session.getAttribute("user"));
 
 	if (request.getParameter("delete") == null) {
-
-	    UserDTO uDto = new UserDTO();
-
-	    uDto.setId(Long.parseLong(request.getParameter("userId")));
-	    uDto.setFirstName(request.getParameter("firstName"));
-	    uDto.setLastName(request.getParameter("lastName"));
-	    uDto.setEmail(request.getParameter("email"));
-	    uDto.setPlainPassword(request.getParameter("password"));
-	    uDto.setBalance(request.getParameter("balance"));
-	    uDto.setRoleId(request.getParameter("roleId"));
+	    
+	    userDto.setFirstName(request.getParameter("firstName"));
+	    userDto.setLastName(request.getParameter("lastName"));
+	    userDto.setEmail(request.getParameter("email"));
+	    userDto.setPasswordHash(request.getParameter("password"));
+	    userDto.setBalance(request.getParameter("balance"));
+	    userDto.setRole(request.getParameter("roleId"));
 
 	    UserEditService editUser = new UserEditService();
-	    uDto = editUser.updateUser(uDto);
+	    User user = editUser.updateUser(userDto.convertToUser());
 
-	    if (uDto != null) {
-		session.setAttribute("user", uDto); // update session
+	    if (user != null) {
+		session.setAttribute("user", user); // update session
 		request.setAttribute("notice", "User successfully edited!");
 	    } else {
 		request.setAttribute("notice", "User edit failed!");
@@ -58,7 +59,7 @@ public class UserEdit extends HttpServlet {
 	    requestDispatcher.forward(request, response);
 
 	} else {
-	    if (new UserDAO().deleteUserById(Long.parseLong(request.getParameter("userId")))) {
+	    if (new GenericDAO().delete((User) session.getAttribute("user"))) {
 		request.setAttribute("notice", "User has been deleted...");
 		session.setAttribute("user", null);
 		requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");

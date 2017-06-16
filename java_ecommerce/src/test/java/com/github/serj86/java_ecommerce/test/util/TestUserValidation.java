@@ -38,7 +38,7 @@ public class TestUserValidation {
 	user.setLastName("Tset");
 	user.setEmail(testEmail);
 	user.setBalance(Double.parseDouble(new SettingDAO().getSettingValueByName("user_starting_balance")));
-	user.setRoleObject(roleDao.getRoleById(Long.getLong(new SettingDAO().getSettingValueByName("user_default_role_id"))));
+	user.setRole(roleDao.getRoleById(Long.getLong(new SettingDAO().getSettingValueByName("user_default_role_id"))));
 	user.setPasswordHash(testPassword);
 	gDao.add(user);
 	System.out.println("New test user has been created.");

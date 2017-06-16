@@ -1,12 +1,18 @@
 package com.github.serj86.java_ecommerce.entities;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.transaction.Transactional;
 
 import com.github.serj86.java_ecommerce.util.BCrypt;
 
@@ -33,16 +39,18 @@ public class User {
     @Column(unique = false, nullable = false, length = 20)
     private Double balance;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade=CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name="role_id", unique = false, nullable = false)
     private Role role;
-    
 
-    public Role getRoleObject() {
+    @OneToMany(mappedBy="user", fetch = FetchType.EAGER, orphanRemoval=true)
+    private Set<Order> orders = new TreeSet<Order>();
+
+    public Role getRole() {
 	return role;
     }
 
-    public void setRoleObject(Role role) {
+    public void setRole(Role role) {
 	this.role = role;
     }
 
@@ -97,6 +105,10 @@ public class User {
 
     public void setId(Long id) {
 	this.id = id;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
     }
 
 }

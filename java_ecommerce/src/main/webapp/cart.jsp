@@ -42,50 +42,48 @@
 		
 			<header class="major">
 				<h2>Shopping Cart</h2>
-				<p>You have <c:out value="${sessionScope.cart.getProductsMap().size()}">no</c:out> item(s) in your shopping cart.</p>
+				<p>You have <c:out value="${sessionScope.order.getCartItemsMap().size()}">no</c:out> item(s) in your shopping cart.</p>
 			</header>
 			
-			<c:if test = "${sessionScope.cart.getProductsMap().size() > 0}">
+			<c:if test = "${sessionScope.order.getCartItemsMap().size() > 0}">
 				<div class="table-wrapper">
 					<table class="alt">
 						<thead>
 							<tr>
-								<th class="2u align-center">Image</th>
 								<th class="2u align-center">SKU</th>
-								<th class="3u align-center">Name</th>
+								<th class="3u align-center">Item Name</th>
 								<th class="1u align-center">Price</th>
 								<th class="2u align-center">Quantity</th>
-								<th class="2u align-center">Total</th>
+								<th class="2u align-center">Row Total</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${sessionScope.cart.getProductsMap()}" var="item">
+							<c:forEach items="${sessionScope.order.getCartItemsMap()}" var="item">
 								<tr>
-									<td><a href="#" class="image fit"><img	src="${item.value.mainImage}" alt=""/></a></td>
-									<td class="align-center"><h5>${item.value.sku}</h5></td>
-									<td><a href="#">${item.value.name}</a></td>
-									<td class="align-right"><fmt:formatNumber value="${item.value.price}" type="currency" /></td>
+									<td class="align-center"><h5>${item.value.getSku()}</h5></td>
+									<td>${item.value.getName()}</td>
+									<td class="align-right"><fmt:formatNumber value="${item.value.getPrice()}" type="currency" /></td>
 									<td class="align-center">
 										<div class="12u">
-											<a href="cart?dec-sku=${item.value.sku}" class="icon fa-minus-square"></a>
-											&nbsp;&nbsp;&nbsp;<b>${item.value.stock}</b>&nbsp;&nbsp;&nbsp;
-											<a href="cart?inc-sku=${item.value.sku}" class="icon fa-plus-square"></a>
+											<a href="cart?dec-sku=${item.value.getSku()}" class="icon fa-minus-square"></a>
+											&nbsp;&nbsp;&nbsp;<b>${item.value.getQuantity()}</b>&nbsp;&nbsp;&nbsp;
+											<a href="cart?inc-sku=${item.value.getSku()}" class="icon fa-plus-square"></a>
 										</div>
 										<div class="12u">
-											<a href="cart?rem-sku=${item.value.sku}" class="icon fa-remove">&nbsp;Remove</a>
+											<a href="cart?rem-sku=${item.value.getSku()}" class="icon fa-remove">&nbsp;Remove</a>
 										</div>
 									</td>
-									<td class="align-right"><b><fmt:formatNumber value="${item.value.price * item.value.stock}" type="currency" /></b></td>
+									<td class="align-right"><b><fmt:formatNumber value="${item.value.getPriceTotal()}" type="currency" /></b></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="4"  class="align-right">
+								<td colspan="3"  class="align-right">
 									<a href="cart?empty" class="button icon fa-remove">Empty Shopping Cart</a>
 								</td>
 								<td class="align-right">Grand Total:</td>
-								<td class="align-right"><strong><em><fmt:formatNumber value="${sessionScope.cart.getTotal()}" type="currency" /></em></strong></td>
+								<td class="align-right"><strong><em><fmt:formatNumber value="${sessionScope.order.getOrderTotal()}" type="currency" /></em></strong></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -111,21 +109,21 @@
 
 						<div id="cta" class="inner">
 							<h4>Checkout</h4>
-							<p><c:out value="${sessionScope.user.firstName}">Guest</c:out>, your available balance is: <b><fmt:formatNumber value="${sessionScope.user.balance}" type="currency" /></b>, order total is: <fmt:formatNumber value="${sessionScope.cart.getTotal()}" type="currency" /></p>
+							<p><c:out value="${sessionScope.user.firstName}">Guest</c:out>, your available balance is: <b><fmt:formatNumber value="${sessionScope.user.balance}" type="currency" /></b>, order total is: <fmt:formatNumber value="${sessionScope.order.getOrderTotal()}" type="currency" /></p>
 							
 
 							
 							<c:choose>
-								<c:when test="${sessionScope.user.balance >= sessionScope.cart.getTotal()}">
-									<p>After placing the order your remaining balance will be: <b><fmt:formatNumber value="${sessionScope.user.balance - sessionScope.cart.getTotal()}" type="currency" /></b>.</p>
+								<c:when test="${sessionScope.user.balance >= sessionScope.order.getOrderTotal()}">
+									<p>After placing the order your remaining balance will be: <b><fmt:formatNumber value="${sessionScope.user.balance - sessionScope.order.getOrderTotal()}" type="currency" /></b>.</p>
 									<ul class="actions">
-										<li><a href="/checkout" class="button big scrolly special icon fa-check-square-o">Place Order</a></li>
+										<li><a href="cart?submit" class="button big scrolly special icon fa-check-square-o">Submit Order</a></li>
 									</ul>
 							  	</c:when>
 							  	<c:otherwise>
-							  		<p>Insufficient amount: <b><i><fmt:formatNumber value="${sessionScope.cart.getTotal() - sessionScope.user.balance}" type="currency" /></i></b>.</p>
+							  		<p>Insufficient amount: <b><i><fmt:formatNumber value="${sessionScope.order.getOrderTotal() - sessionScope.user.balance}" type="currency" /></i></b>.</p>
 									<ul class="actions">
-										<li><span class="button big scrolly special disabled">Place Order</span></li>
+										<li><span class="button big scrolly special disabled">Submit Order</span></li>
 									</ul>
 							  	</c:otherwise>
 							</c:choose>

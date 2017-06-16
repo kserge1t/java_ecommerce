@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.github.serj86.java_ecommerce.dto.UserDTO;
 import com.github.serj86.java_ecommerce.entities.User;
 import com.github.serj86.java_ecommerce.services.UserValidationService;
 
@@ -39,9 +38,8 @@ public class UserAuthentication extends HttpServlet {
 	User authenticatedUser = new UserValidationService().getValidatedUserByEmail(email, password);
 	
 	if (authenticatedUser != null) {
-	    UserDTO uDto = new UserDTO(authenticatedUser);
-	    session.setAttribute("user", uDto);
-	    request.setAttribute("notice", "Welcome " + uDto.getFirstName() + " " + uDto.getLastName() + "!");
+	    session.setAttribute("user", authenticatedUser);
+	    request.setAttribute("notice", "Welcome " + authenticatedUser.getFirstName() + " " + authenticatedUser.getLastName() + "!");
 	    requestDispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	    requestDispatcher.forward(request, response);
 	} else {

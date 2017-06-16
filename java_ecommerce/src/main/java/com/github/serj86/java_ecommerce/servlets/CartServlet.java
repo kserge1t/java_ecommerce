@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.github.serj86.java_ecommerce.services.CartService;
+import com.github.serj86.java_ecommerce.entities.Order;
+import com.github.serj86.java_ecommerce.entities.User;
+import com.github.serj86.java_ecommerce.services.OrderService;
 
 @WebServlet(urlPatterns = { "/cart" })
 public class CartServlet extends HttpServlet {
@@ -20,38 +22,45 @@ public class CartServlet extends HttpServlet {
 
 	RequestDispatcher requestDispatcher;
 	HttpSession session = request.getSession();
-	
-	CartService cart = (CartService) session.getAttribute("cart");
-	if (cart == null) {
-	    cart = new CartService();
-	}
 	String dispatchUrl = "/cart.jsp";
 	
+	OrderService orderService = new OrderService();
+	
+	if (session.getAttribute("order") != null) {
+	    orderService.setOrder((Order) session.getAttribute("order"));
+	}
+	
 	if (request.getParameter("add-sku") != null) {
-	    cart.addProductBySku(request.getParameter("add-sku"));
+	    orderService.addProductBySku(request.getParameter("add-sku"));
 	    dispatchUrl = "/catalog";
 	}
 	
 	if (request.getParameter("inc-sku") != null) {
-	    cart.addProductBySku(request.getParameter("inc-sku"));
+	    orderService.addProductBySku(request.getParameter("inc-sku"));
 	}
 	
 	if (request.getParameter("dec-sku") != null) {
-	    cart.subtractQuantityBySku(request.getParameter("dec-sku"));
+	    orderService.subtractQuantityBySku(request.getParameter("dec-sku"));
 	}
 	
 	if (request.getParameter("rem-sku") != null) {
-	    cart.removeProductBySku(request.getParameter("rem-sku"));
+	    orderService.removeCartItemBySku(request.getParameter("rem-sku"));
 	}
 	
 	if (request.getParameter("empty") != null) {
-	    session.setAttribute("cart", null);
+	    session.setAttribute("order", null);
 	    request.setAttribute("notice", "Shopping cart has been emptied.");
 	} else {
-	    session.setAttribute("cart", cart);
-	    request.setAttribute("notice", cart.getMessage());
+	    session.setAttribute("order", orderService.getOrder());
+	    request.setAttribute("notice", orderService.getMessage());
 	}
 	
+	if (request.getParameter("submit") != null && session.getAttribute("user") != null && session.getAttribute("order") != null) {
+	    if (orderService.submitOrder((User) session.getAttribute("user"))){
+	    	session.setAttribute("order", null);
+	    }
+	    request.setAttribute("notice", orderService.getMessage());
+	}
 
 	requestDispatcher = getServletContext().getRequestDispatcher(dispatchUrl);
 	requestDispatcher.forward(request, response);

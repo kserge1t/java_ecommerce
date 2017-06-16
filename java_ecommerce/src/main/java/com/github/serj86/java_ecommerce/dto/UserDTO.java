@@ -1,163 +1,177 @@
 package com.github.serj86.java_ecommerce.dto;
 
 import com.github.serj86.java_ecommerce.dao.RoleDAO;
+import com.github.serj86.java_ecommerce.entities.Role;
 import com.github.serj86.java_ecommerce.entities.User;
+import com.github.serj86.java_ecommerce.util.BCrypt;
 
 public class UserDTO {
 
-    private String user_id;
+    private Long id;
     private String email;
-    private String plainPassword;
-    private String hashedPassword;
+    private String passwordHash;
     private String firstName;
     private String lastName;
-    private String balance;
-    private String roleId;
+    private Double balance;
+    private Long roleId;
     private String roleName;
-    
-    public UserDTO() {}
-    
+
+    public UserDTO() {
+    }
+
     public UserDTO(User user) {
-	this.convertUserToDto(user);
+	this.setId(user.getId());
+	this.setEmail(user.getEmail());
+	this.setPreHashedPassword(user.getPasswordHash());
+	this.setFirstName(user.getFirstName());
+	this.setLastName(user.getEmail());
+	this.setBalance(user.getBalance());
+	this.setRoleId(user.getRole().getId());
+	this.setRoleName(user.getRole().getRole());
     }
 
-    public String getRoleId() {
-	return roleId;
+    public Long getId() {
+	return id;
     }
 
-    public <T> void setRoleId(T roleId) {
-	this.roleId = String.valueOf(roleId);
+    public void setId(Long id) {
+	this.id = id;
     }
 
-    public String getRoleName() {
-	return roleName;
-    }
-
-    public <T> void setRoleName(T roleName) {
-	this.roleName = String.valueOf(roleName);
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public <T> void setBalance(T balance) {
-        this.balance = String.valueOf(balance);
+    public void setId(String id) {
+	try {
+	    this.setId(Long.valueOf(id));
+	} catch (NumberFormatException e) {
+	    this.id = null;
+	}
     }
 
     public String getEmail() {
 	return email;
     }
 
-    public <T> void setEmail(T email) {
-	this.email = String.valueOf(email);
+    public void setEmail(String email) {
+	this.email = processStringValue(email);
+    }
+
+    public String getPasswordHash() {
+	return passwordHash;
+    }
+
+    public void setPasswordHash(String plainPassword) {
+	plainPassword = processStringValue(plainPassword);
+	if (plainPassword != null)
+	    this.passwordHash = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
+	else 
+	    this.passwordHash = null;
+    }
+
+    public void setPreHashedPassword(String hashedPassword) {
+	this.passwordHash = processStringValue(hashedPassword);
     }
 
     public String getFirstName() {
 	return firstName;
     }
 
-    public <T> void setFirstName(T firstName) {
-	this.firstName = String.valueOf(firstName);
+    public void setFirstName(String firstName) {
+	this.firstName = processStringValue(firstName);
     }
 
     public String getLastName() {
 	return lastName;
     }
 
-    public <T> void setLastName(T lastName) {
-	this.lastName = String.valueOf(lastName);
+    public void setLastName(String lastName) {
+	this.lastName = processStringValue(lastName);
     }
 
-    public String getId() {
-	return user_id;
+    public Double getBalance() {
+	return balance;
     }
 
-    public <T> void setId(T id) {
-	this.user_id = String.valueOf(id);
+    public void setBalance(Double balance) {
+	this.balance = balance;
     }
 
-    public String getPlainPassword() {
-	return plainPassword;
+    public void setBalance(String balance) {
+	try {
+	    this.setBalance(Double.valueOf(balance));
+	} catch (Exception e) {
+	    this.balance = null;
+	}
     }
 
-    public <T> void setPlainPassword(T plainPassword) {
-	this.plainPassword = String.valueOf(plainPassword);
+    public Long getRoleId() {
+	return roleId;
     }
 
-    public String getHashedPassword() {
-	return hashedPassword;
-    }
-
-    public <T> void setHashedPassword(T hashedPassword) {
-	this.hashedPassword = String.valueOf(hashedPassword);
-    }
-    
-    public void convertUserToDto(User user) {
-	this.setId(String.valueOf(user.getId()));
-	this.setEmail(user.getEmail());
-	this.setFirstName(user.getFirstName());
-	this.setLastName(user.getLastName());
-	this.setRoleId(String.valueOf(user.getRoleObject().getId()));
-	this.setRoleName(user.getRoleObject().getRole());
-	this.setBalance(String.valueOf(user.getBalance()));
-	this.setHashedPassword(user.getPasswordHash());
-    }
-
-    public User convertDtoToUser() {
-	User user = new User();
+    public void setRoleId(Long roleId) {
+	this.roleId = roleId;
 	
+    }
+
+    public void setRoleId(String roleId) {
 	try {
-	    user.setId(Long.parseLong(this.getId()));
+	    this.roleId = Long.valueOf(roleId);
 	} catch (Exception e) {
-	    System.out.println(e.getMessage()+" when setId("+this.getId()+") for User");
+	    this.roleId = null;
 	}
+    }
+
+    public String getRoleName() {
+	return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+	this.roleName = processStringValue(roleName);
+    }
+
+    public void setRole(Role role) {
+	this.roleId = role.getId();
+	this.roleName = role.getRole();
+    }
+
+    public void setRole(Long role_id) {
+	this.setRole(new RoleDAO().getRoleById(role_id));
+    }
+
+    public void setRole(String role_id) {
+	try {
+	    this.setRole(new RoleDAO().getRoleById(Long.valueOf(roleId)));
+	} catch (Exception e) {
+	    this.roleId = null;
+	    this.roleName = null;
+	}
+    }
+
+    /* Other Methods */
+
+    public User convertToUser() {
+	User user = new User();
 
 	try {
-	user.setEmail(this.getEmail());
+	    user.setId(this.getId());
+	    user.setEmail(this.getEmail());
+	    user.setPreHashedPassword(this.getPasswordHash());
+	    user.setFirstName(this.getFirstName());
+	    user.setLastName(this.getLastName());
+	    user.setBalance(this.getBalance());
+	    user.setRole(new RoleDAO().getRoleById(this.getRoleId()));
 	} catch (Exception e) {
-	    System.out.println(e.getMessage()+" when setEmail("+this.getEmail()+") for User");
-	}
-
-	try {
-	user.setFirstName(this.getFirstName());
-	} catch (Exception e) {
-	    System.out.println(e.getMessage()+" when setFirstName("+this.getFirstName()+") for User");
-	}
-
-	try {
-	user.setLastName(this.getLastName());
-	} catch (Exception e) {
-	    System.out.println(e.getMessage()+" when setLastName("+this.getLastName()+") for User");
-	}
-
-	try {
-	    user.setRoleObject(new RoleDAO().getRoleById(Integer.parseInt(this.getRoleId())));
-	} catch (Exception e) {
-	    System.out.println(e.getMessage()+" when setRoleObject("+this.getRoleId()+") for User");
-	}
-
-	try {
-	    user.setBalance(Double.parseDouble(this.getBalance()));
-	} catch (Exception e) {
-	    System.out.println(e.getMessage()+" when setBalance("+this.getBalance()+") for User");
-	}
-
-	try {
-	    if (this.getPlainPassword() != null)
-	    user.setPasswordHash(this.getPlainPassword());
-	} catch (Exception e) {
-	    System.out.println(e.getMessage()+" when setPasswordHash("+this.getPlainPassword()+") for User");
-	}
-
-	try {
-	    if (this.getHashedPassword() != null)
-	    user.setPreHashedPassword(this.getHashedPassword());
-	} catch (Exception e) {
-	    System.out.println(e.getMessage()+" when setPreHashedPassword("+this.getHashedPassword()+") for User");
+	    user = null;
+	    e.printStackTrace();
 	}
 
 	return user;
+
+    }
+
+    private String processStringValue(String value) {
+	if (value.trim().isEmpty())
+	    return null;
+	else
+	    return value.trim();
     }
 
 }

@@ -1,5 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<h1 id="msg"><c:out value="${requestScope.notice}">Hello <c:out value="${sessionScope.user.firstName}">Guest</c:out>!</c:out></h1>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en_US" />
+
+<h1 id="msg">
+<c:out value="${requestScope.notice}">Hello <c:out value="${sessionScope.user.getFirstName()}">Guest</c:out>!</c:out>
+</h1>
+
 <nav id="nav">
 	<ul>
 	
@@ -10,17 +16,20 @@
 		</c:if>
 		
 		<li><a href="catalog" class="icon fa-book">Catalog</a></li>
-		<li><a href="cart.jsp" class="icon fa-shopping-cart">Cart <c:if test = "${cart.getProductsMap().size() > 0}">(${cart.getProductsMap().size()})</c:if></a></li>
+		<li><a href="cart.jsp" class="icon fa-shopping-cart">Cart <c:if test = "${sessionScope.order.getCartItemsMap().size() > 0}">(${sessionScope.order.getCartItemsMap().size()})</c:if></a>
+		</li>
 		
 		<c:if test = "${not empty sessionScope.user}">
 
 			<li>
 				<a href="" class="icon fa-caret-down">Account</a>
 				<ul>
+					<li><a href="orders.jsp" class="icon fa-table">&nbsp;Orders Summary</a></li>
 					<li><a href="index.jsp#edit" class="icon fa-edit">&nbsp;Edit User</a></li>
 					<li><a href="logout" class="icon fa-sign-out">&nbsp;Logout</a></li>
 				</ul>
 			</li>
+			<li><i>(Balance: <fmt:formatNumber value="${sessionScope.user.getBalance()}" type="currency" />)</i></li>
 			
 			<%-- 
 			<c:if test = "${sessionScope.user.roleId == 1}">

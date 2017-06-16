@@ -37,7 +37,7 @@
 		<!-- Banner -->
 			<section id="banner">
 				<div class="inner">
-					<h2>Welcome <c:out value="${sessionScope.user.firstName}"></c:out></h2>
+					<h2>Welcome <c:out value="${sessionScope.user.firstName}">Guest</c:out>!</h2>
 					
 					<c:if test = "${empty sessionScope.user}">
 					<p>Please login or register.</p>
@@ -138,14 +138,12 @@
 					<p>Input values to change</p>
 
 					<form name="editForm" action="user-edit" method="post">
-					
-						<input type="hidden" name="userId" value="<c:out value="${sessionScope.user.id}"></c:out>">
-						
+											
 						<div class="row uniform">
 							<div class="12u">
 								<ul class="actions">
 									<li>First Name:</li>
-									<li><input type="text" name="firstName" placeholder="<c:out value="${sessionScope.user.firstName}"></c:out>"></li>
+									<li><input type="text" name="firstName" placeholder="<c:out value="${sessionScope.user.getFirstName()}"></c:out>"></li>
 								</ul>
 							</div>
 						</div>
@@ -154,7 +152,7 @@
 							<div class="12u">
 								<ul class="actions">
 									<li>Last Name:</li>
-									<li><input type="text" name="lastName" placeholder="<c:out value="${sessionScope.user.lastName}"></c:out>"></li>
+									<li><input type="text" name="lastName" placeholder="<c:out value="${sessionScope.user.getLastName()}"></c:out>"></li>
 								</ul>
 							</div>
 						</div>
@@ -163,18 +161,18 @@
 							<div class="12u">
 								<ul class="actions">
 									<li>eMail:</li>
-									<li><input class="email" type="email" name="email" placeholder="<c:out value="${sessionScope.user.email}"></c:out>"></li>
+									<li><input class="email" type="email" name="email" placeholder="<c:out value="${sessionScope.user.getEmail()}"></c:out>"></li>
 								</ul>
 							</div>
 						</div>
 						
-						<c:if test="${user.roleId == 1}">
+						<c:if test="${sessionScope.user.getRole().getId() == 1}">
 						
 							<div class="row uniform">
 								<div class="12u">
 									<ul class="actions">
 										<li>Balance:</li>
-										<li><input type="text" name="balance" placeholder="<c:out value="${sessionScope.user.balance}"></c:out>"></li>
+										<li><input type="text" name="balance" placeholder="<c:out value="${sessionScope.user.getBalance()}"></c:out>"></li>
 									</ul>
 								</div>
 							</div>
@@ -183,7 +181,7 @@
 								<div class="12u">
 									<ul class="actions">
 										<li>Role ID:</li>
-										<li><input type="text" name="roleId" placeholder="<c:out value="${sessionScope.user.roleId} (${sessionScope.user.roleName})"></c:out>"></li>
+										<li><input type="text" name="roleId" placeholder="<c:out value="${sessionScope.user.getRole().getId()} (${sessionScope.user.getRole().getRole()})"></c:out>"></li>
 									</ul>
 								</div>
 							</div>
